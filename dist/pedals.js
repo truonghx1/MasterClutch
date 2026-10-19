@@ -1,6 +1,6 @@
 export const pedalKeys={KeyQ:['clutch',1],KeyA:['clutch',-1],KeyI:['brake',1],KeyK:['brake',-1],KeyO:['gas',1],KeyL:['gas',-1]};
 const clamp=value=>Math.max(0,Math.min(1,value));
-const TAP=.02,RATE=.2,DELAY=.25;
+const TAP=.03,RATE=.3,DELAY=.15;
 
 // Input is based on elapsed time, never the operating system's key repeat rate.
 export class PedalControls{

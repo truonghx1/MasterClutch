@@ -4,29 +4,29 @@ import {PedalControls,pedalKeys} from '../dist/pedals.js';
 import {Car,routes} from '../dist/physics.js';
 const near=(actual,expected)=>assert.ok(Math.abs(actual-expected)<1e-8,`${actual} != ${expected}`);
 
-test('Each of the six keys adjusts its pedal by 2% and release holds the level',()=>{
+test('Each of the six keys adjusts its pedal by 3% and release holds the level',()=>{
   for(const [code,[name,direction]] of Object.entries(pedalKeys)){
     const p=new PedalControls();p.set(name,.5);p.press(code);p.lift(code);p.step(5);
-    near(p.levels[name],.5+direction*.02);
+    near(p.levels[name],.5+direction*.03);
   }
 });
-test('Holding adjusts at 20% per second after 250ms; repeat events do not accelerate it',()=>{
+test('Holding adjusts at 30% per second after 150ms; repeat events do not accelerate it',()=>{
   for(const hz of [30,60,120]){
     const p=new PedalControls();p.press('KeyO');
     for(let i=0;i<hz;i++){p.press('KeyO');p.step(1/hz)}
-    near(p.levels.gas,.17);p.lift('KeyO');p.step(10);near(p.levels.gas,.17);
+    near(p.levels.gas,.285);p.lift('KeyO');p.step(10);near(p.levels.gas,.285);
   }
 });
 test('Pedals adjust independently, opposite directions cancel and limits clamp',()=>{
   const p=new PedalControls();p.press('KeyA');p.press('KeyI');p.press('KeyO');p.step(1);
-  near(p.levels.clutch,.83);near(p.levels.brake,.17);near(p.levels.gas,.17);
-  p.press('KeyQ');p.step(1);near(p.levels.clutch,.83);
+  near(p.levels.clutch,.715);near(p.levels.brake,.285);near(p.levels.gas,.285);
+  p.press('KeyQ');p.step(1);near(p.levels.clutch,.715);
   p.lift('KeyQ');p.step(10);near(p.levels.clutch,0);near(p.levels.brake,1);near(p.levels.gas,1);
 });
 test('Keyboard and pointer sources do not double speed or release each other',()=>{
-  const p=new PedalControls();p.press('KeyO');p.press('KeyO',1);p.step(1);near(p.levels.gas,.17);
-  p.lift(1);p.step(1);near(p.levels.gas,.37);
-  p.release();p.step(1);near(p.levels.gas,.37);
+  const p=new PedalControls();p.press('KeyO');p.press('KeyO',1);p.step(1);near(p.levels.gas,.285);
+  p.lift(1);p.step(1);near(p.levels.gas,.585);
+  p.release();p.step(1);near(p.levels.gas,.585);
   p.reset();assert.deepEqual(p.levels,{clutch:1,brake:0,gas:0});assert.equal(p.active.size,0);
 });
 test('Continuous lessons repeat the terrain without stopping or resetting the session',()=>{

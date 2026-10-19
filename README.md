@@ -4,9 +4,9 @@
 
 Mặc định là góc nhìn người ngồi trong khoang xe, có hai tay trên vô-lăng, gương, cần số và đồng hồ chạy theo trạng thái xe. Nút **Góc nhìn** chuyển về hình xe nhìn từ bên ngoài. Không cần đánh lái.
 
-Trên PC, bài tập ở bên trái, khoang lái và đồng hồ ở giữa, bàn đạp và hộp số ở bên phải. Các điều khiển chính nằm trong màn hình laptop từ 1280×720. Có thể dùng bàn phím, nhấn giữ nút tăng/giảm hoặc kéo thanh mức bằng chuột. Giao diện tự xếp lại khi cửa sổ nhỏ hơn.
+Trên PC, bài tập và nhật ký ở bên trái, khung nhìn đường thu gọn ở trên, thông số xe và độ dốc ở giữa, bàn đạp và hộp số ở dưới cùng. Các điều khiển chính nằm trong màn hình laptop từ 1280×720. Có thể dùng bàn phím, nhấn giữ nút tăng/giảm hoặc kéo thanh mức bằng chuột. Giao diện tự xếp lại khi cửa sổ nhỏ hơn.
 
-Mỗi lần nhấn chỉnh 2%. Giữ phím quá 0,25 giây sẽ tăng/giảm đều 20 điểm phần trăm mỗi giây; tốc độ không phụ thuộc tính năng lặp phím của hệ điều hành. Thả phím giữ nguyên mức, không tự nhả. Xe bắt đầu với côn 100% và phanh tay đang giữ.
+Mỗi lần nhấn chỉnh 3%. Giữ phím quá 0,15 giây sẽ tăng/giảm đều 30 điểm phần trăm mỗi giây; tốc độ không phụ thuộc tính năng lặp phím của hệ điều hành. Thả phím giữ nguyên mức, không tự nhả. Xe bắt đầu với côn 100% và phanh tay đang giữ.
 
 ## Deploy lên Vercel từ GitHub
 
@@ -35,7 +35,7 @@ Mở http://127.0.0.1:5173. Kiểm thử mô hình xe: `npm test`.
 - Q tăng côn, A giảm côn.
 - I tăng phanh, K giảm phanh.
 - O tăng ga, L giảm ga.
-- Nhấn ngắn chỉnh 2%; giữ để chỉnh đều; thả phím giữ mức. Có thể giữ nhiều phím đồng thời. Hai phím ngược chiều của cùng bàn đạp triệt tiêu nhau.
+- Nhấn ngắn chỉnh 3%; giữ để chỉnh đều; thả phím giữ mức. Có thể giữ nhiều phím đồng thời. Hai phím ngược chiều của cùng bàn đạp triệt tiêu nhau.
 - 1–5: số tiến; 6: số lùi; N: số mo.
 - Enter: khởi động lại; Space: tạm dừng.
 - H hoặc nút Phanh tay: bật/tắt phanh tay để giữ xe khi đề-pa dốc.

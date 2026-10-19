@@ -25,15 +25,15 @@
         <button class="lesson" data-route="hill"><span class="lesson-icon">⌁</span><span><b>Khởi hành ngang dốc</b><small>Dốc lên · 8–12%</small></span><em>02</em></button>
         <button class="lesson" data-route="descent"><span class="lesson-icon">↘</span><span><b>Kiểm soát xuống dốc</b><small>Dốc xuống · phanh động cơ</small></span><em>03</em></button>
       </div>
-      <div class="coach"><div class="section-label"><span class="live-dot"></span> GỢI Ý THAO TÁC</div><h3 id="coach-title">Khởi hành từng bước.</h3><p id="coach-text"></p><div class="tip">Mỗi nhấn: 2% · Giữ phím: 20%/giây.<br>Thả phím là giữ mức, không tự nhả.</div></div>
+      <div class="coach"><div class="section-label"><span class="live-dot"></span> GỢI Ý THAO TÁC</div><h3 id="coach-title">Khởi hành từng bước.</h3><p id="coach-text"></p><div class="tip">Mỗi nhấn: 3% · Giữ phím: 30%/giây.<br>Thả phím là giữ mức, không tự nhả.</div></div>
       <div class="session"><div class="section-label">BUỔI TẬP</div><div><span>Thời gian</span><b id="time">00:00</b></div><div><span>Lỗi thao tác</span><b id="errors">0</b></div><div><span>Số lần tắt máy</span><b id="stalls">0</b></div></div>
       <p class="note">Đường lặp lại liên tục. Chọn bài khác khi bạn muốn đổi.</p>
+      <div class="feedback"><div class="section-label">NHẬT KÝ THAO TÁC <span id="log-count">0 SỰ KIỆN</span></div><div id="logs" aria-live="polite"></div></div>
     </aside>
     <section class="sim" aria-label="Khoang lái và điều khiển">
       <div class="scene">
         <canvas id="road" aria-label="Khoang lái và đường phía trước"></canvas>
         <div class="scene-top"><span class="scene-tag">● <span id="scene-name">LÀM QUEN CÔN SỐ</span></span><button id="view">Góc nhìn: Khoang lái</button><button id="pause">Ⅱ Tạm dừng</button></div>
-        <div class="slope"><span>ĐỘ DỐC</span><b id="grade">0%</b><small id="grade-name">Đường bằng</small></div>
         <div class="scene-bottom"><span id="distance">0 m · Tập không giới hạn</span><span id="direction">SẴN SÀNG KHỞI HÀNH</span></div>
         <div class="progress"><i id="progress"></i></div>
         <div id="overlay" hidden><h2 id="overlay-title"></h2><p id="overlay-text"></p><button id="resume">Tiếp tục</button></div>
@@ -42,6 +42,7 @@
         <div class="gauge"><div class="section-label">VÒNG TUA ĐỘNG CƠ</div><div class="rpm-value"><strong id="rpm">850</strong><span>RPM</span></div><div class="rpm-track"><i id="rpm-bar"></i></div><div class="ticks"><span>0</span><span>2</span><span>4</span><span class="red">6</span><span class="red">8 ×1000</span></div></div>
         <div class="speed"><strong id="speed">0</strong><span>km/h</span></div>
         <div class="gear-display"><span>SỐ HIỆN TẠI</span><strong id="gear">N</strong><small id="engine">● Động cơ đang chạy</small></div>
+        <div class="slope"><span>ĐỘ DỐC</span><b id="grade">0%</b><small id="grade-name">Đường bằng</small></div>
       </div>
       <div class="controls">
         <div class="pedal-area"><div class="section-label">02 / BÀN ĐẠP <span>THẢ PHÍM GIỮ MỨC</span></div>
@@ -78,7 +79,6 @@
         <div class="training-controls"><button id="handbrake" aria-pressed="true">Phanh tay · ĐANG GIỮ · H</button><button id="start" disabled>● Máy đang chạy</button></div>
         <p class="control-note">Có thể giữ nhiều phím cùng lúc hoặc dùng chuột chỉnh mức.</p>
       </div>
-      <div class="feedback"><div class="section-label">NHẬT KÝ THAO TÁC <span id="log-count">0 SỰ KIỆN</span></div><div id="logs" aria-live="polite"></div></div>
     </section>
   </div>
   <footer><b>CLUTCH /</b> Tập không giới hạn.<span>Q / A · Côn &nbsp; I / K · Phanh &nbsp; O / L · Ga &nbsp; 1–5 · Số tiến &nbsp; 6 · Số lùi &nbsp; Space · Tạm dừng</span></footer>
@@ -86,7 +86,7 @@
 <dialog id="guide">
   <button id="close-help" aria-label="Đóng hướng dẫn">✕</button><div class="eyebrow">CẨM NANG NHANH</div><h2>Chỉnh từng chút. Thả phím giữ mức.</h2>
   <ol>
-    <li><b>Côn:</b> Q tăng, A giảm. <b>Phanh:</b> I tăng, K giảm. <b>Ga:</b> O tăng, L giảm. Mỗi nhấn chỉnh 2%; giữ phím sau 0,25 giây sẽ chỉnh đều 20% mỗi giây. Thả phím để giữ nguyên mức.</li>
+    <li><b>Côn:</b> Q tăng, A giảm. <b>Phanh:</b> I tăng, K giảm. <b>Ga:</b> O tăng, L giảm. Mỗi nhấn chỉnh 3%; giữ phím sau 0,15 giây sẽ chỉnh đều 30% mỗi giây. Thả phím để giữ nguyên mức.</li>
     <li><b>Khởi hành:</b> côn 100%, chọn số 1. O thêm ga vừa đủ, A giảm côn từ từ đến điểm bắt, H nhả phanh tay. Thả A khi muốn giữ côn ở điểm bắt.</li>
     <li><b>Chuyển số:</b> L giảm ga, Q tăng côn đến 100%, chọn số mới bằng 1–5. A giảm côn từ từ rồi O thêm ga. N là số mo, 6 là số lùi.</li>
     <li><b>Dừng xe:</b> L giảm ga về 0%, I tăng phanh và Q tăng côn trước khi vòng tua tụt thấp. K để giảm phanh.</li>
