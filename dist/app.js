@@ -35,10 +35,10 @@ function commitPedals(){
 }
 function coach(){
   let title='Khởi hành từng bước.',text='Côn 100% → chọn số 1 → O tăng ga → A giảm côn tới điểm bắt → H nhả phanh tay.';
-  if(!car.running){title='Máy đã tắt. Bạn có thể đề lại.';text='Q tăng côn đến 100%, I tăng phanh, L giảm ga về 0%. Nhấn Enter hoặc Bật động cơ để tiếp tục.'}
+  if(!car.running){title='Máy đã tắt. Bạn có thể đề lại.';text='W tăng côn đến 100%, I tăng phanh, L giảm ga về 0%. Nhấn Enter hoặc Bật động cơ để tiếp tục.'}
   else if(car.grade>.03){title='Giữ lực kéo trên dốc.';text='Dùng H giữ phanh tay. Chọn số 1, O thêm ga và A giảm côn tới điểm bắt. Nhấn H nhả phanh tay khi đủ lực kéo.'}
   else if(car.grade<-.03){title='Dùng phanh động cơ khi xuống dốc.';text='Chọn số thấp phù hợp, A giảm côn. I tăng phanh, K giảm phanh để kiểm soát tốc độ.'}
-  else if(Math.abs(car.v)>2){title='Phối hợp ga và côn khi chuyển số.';text='L giảm ga, Q tăng côn tới 100% rồi chọn số. A giảm côn từ từ và O thêm ga. Thả phím để giữ mức.'}
+  else if(Math.abs(car.v)>2){title='Phối hợp ga và côn khi chuyển số.';text='L giảm ga, W tăng côn tới 100% rồi chọn số. A giảm côn từ từ và O thêm ga. Thả phím để giữ mức.'}
   $('coach-title').textContent=title;$('coach-text').textContent=text;
 }
 

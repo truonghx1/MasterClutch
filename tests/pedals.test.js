@@ -20,8 +20,8 @@ test('Holding adjusts at 80% per second after 100ms; repeat events do not accele
 test('Pedals adjust independently, opposite directions cancel and limits clamp',()=>{
   const p=new PedalControls();p.press('KeyA');p.press('KeyI');p.press('KeyO');p.step(1);
   near(p.levels.clutch,.25);near(p.levels.brake,.75);near(p.levels.gas,.75);
-  p.press('KeyQ');p.step(1);near(p.levels.clutch,.25);
-  p.lift('KeyQ');p.step(10);near(p.levels.clutch,0);near(p.levels.brake,1);near(p.levels.gas,1);
+  p.press('KeyW');p.step(1);near(p.levels.clutch,.25);
+  p.lift('KeyW');p.step(10);near(p.levels.clutch,0);near(p.levels.brake,1);near(p.levels.gas,1);
 });
 test('Keyboard and pointer sources do not double speed or release each other',()=>{
   const p=new PedalControls();p.press('KeyO');p.press('KeyO',1);p.step(.5);near(p.levels.gas,.35);

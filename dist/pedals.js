@@ -1,4 +1,4 @@
-export const pedalKeys={KeyQ:['clutch',1],KeyA:['clutch',-1],KeyI:['brake',1],KeyK:['brake',-1],KeyO:['gas',1],KeyL:['gas',-1]};
+export const pedalKeys={KeyW:['clutch',1],KeyA:['clutch',-1],KeyI:['brake',1],KeyK:['brake',-1],KeyO:['gas',1],KeyL:['gas',-1]};
 const clamp=value=>Math.max(0,Math.min(1,value));
 const TAP=.03,RATE=.8,DELAY=.1; // Full travel takes about 1.3 seconds, including the initial tap.
 

@@ -42,7 +42,7 @@ export class Car{
   shift(n){
     if(!Number.isInteger(n)||!(n in RATIOS)||n===this.gear)return;
     if(this.clutch<.9){
-      this.fault('clutch','Chưa đạp hết côn','Giữ Q đến khi côn đạt 100%, rồi chọn số. Côn chưa ngắt nên mô phỏng chưa cho gài số.');return;
+      this.fault('clutch','Chưa đạp hết côn','Giữ W đến khi côn đạt 100%, rồi chọn số. Côn chưa ngắt nên mô phỏng chưa cho gài số.');return;
     }
     if((n===-1&&Math.abs(this.v)>.3)||(n>0&&this.v<-.3)){
       this.fault('reverse','Dừng xe trước khi đổi hướng','Đạp phanh cho xe dừng hẳn rồi mới chọn số lùi hoặc đổi sang số tiến.');return;
@@ -55,7 +55,7 @@ export class Car{
   start(){
     if(this.running)return;
     if(this.clutch<.9&&this.gear!==0){
-      this.fault('start','Đạp côn để khởi động','Giữ Q để tăng côn đến 100% hoặc về N trước khi bấm khởi động.');return;
+      this.fault('start','Đạp côn để khởi động','Giữ W để tăng côn đến 100% hoặc về N trước khi bấm khởi động.');return;
     }
     this.running=true;this.rpm=IDLE;this.stallTime=0;
   }

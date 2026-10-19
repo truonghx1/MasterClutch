@@ -32,14 +32,14 @@ Mở http://127.0.0.1:5173. Kiểm thử mô hình xe: `npm test`.
 
 ## Điều khiển
 
-- Q tăng côn, A giảm côn.
+- W tăng côn, A giảm côn.
 - I tăng phanh, K giảm phanh.
 - O tăng ga, L giảm ga.
 - Nhấn ngắn chỉnh 3%; giữ để chỉnh đều; thả phím giữ mức. Có thể giữ nhiều phím đồng thời. Hai phím ngược chiều của cùng bàn đạp triệt tiêu nhau.
 - 1–5: số tiến; 6: số lùi; N: số mo.
 - Enter: khởi động lại; Space: tạm dừng.
 - H hoặc nút Phanh tay: bật/tắt phanh tay để giữ xe khi đề-pa dốc.
-- Khi tắt máy, đưa côn lên 100% bằng Q, tăng phanh bằng I, giảm ga về 0% bằng L, rồi nhấn Enter hoặc **Bật động cơ** để đề lại tại chỗ.
+- Khi tắt máy, đưa côn lên 100% bằng W, tăng phanh bằng I, giảm ga về 0% bằng L, rồi nhấn Enter hoặc **Bật động cơ** để đề lại tại chỗ.
 - Tạm dừng hoặc chuyển cửa sổ sẽ hủy các phím đang giữ, giữ nguyên vị trí bàn đạp. **Tập lại** hoặc chọn bài khác đưa xe và các mức bàn đạp về ban đầu.
 
 Ba bài tập có các đoạn đường bằng, lên và xuống dốc dài khác nhau. Đường lặp lại liên tục trong cùng bài, không tự kết thúc hay chuyển bài; người chơi chủ động chọn bài khác. Nhật ký giải thích lỗi gài số, vượt vòng tua, tắt máy, trôi lùi, động cơ ì và thả trôi xuống dốc.

@@ -9,7 +9,7 @@ async function hold(page,key,ms){await page.keyboard.down(key);await page.clock.
 for(const [width,height] of [[1024,768],[1280,600],[1280,720],[1366,768],[1920,1080]])test(`Entire PC page fits ${width}x${height}`,async({page})=>{
   const errors=[];page.on('pageerror',error=>errors.push(error.message));
   await page.setViewportSize({width,height});await page.goto('/');
-  for(const selector of ['#road','.dashboard','.controls','#start','#handbrake','[data-adjust="KeyQ"]','[data-adjust="KeyL"]','[data-gear="5"]','#lessons','.coach','.session','.note','.feedback','footer']){
+  for(const selector of ['#road','.dashboard','.controls','#start','#handbrake','[data-adjust="KeyW"]','[data-adjust="KeyL"]','[data-gear="5"]','#lessons','.coach','.session','.note','.feedback','footer']){
     const box=await page.locator(selector).boundingBox();
     expect(box.x,selector).toBeGreaterThanOrEqual(0);expect(box.y,selector).toBeGreaterThanOrEqual(0);
     expect(box.x+box.width,selector).toBeLessThanOrEqual(width);expect(box.y+box.height,selector).toBeLessThanOrEqual(height);
@@ -28,7 +28,7 @@ for(const [width,height] of [[1024,768],[1280,600],[1280,720],[1366,768],[1920,1
 
 test('Six keys nudge the right pedal and keep its level after release',async({page})=>{
   await open(page);
-  for(const [key,name,expected] of [['a','clutch',97],['q','clutch',100],['i','brake',3],['k','brake',0],['o','gas',3],['l','gas',0]]){
+  for(const [key,name,expected] of [['a','clutch',97],['w','clutch',100],['i','brake',3],['k','brake',0],['o','gas',3],['l','gas',0]]){
     await page.keyboard.press(key);await expect(page.locator('#'+name+'-percent')).toHaveText(expected+'%');
     await page.clock.runFor(600);expect(await value(page,name)).toBe(expected);
   }
@@ -36,7 +36,7 @@ test('Six keys nudge the right pedal and keep its level after release',async({pa
 
 test('All six keys complete the full pedal travel within 1.5 seconds',async({page})=>{
   await open(page);
-  for(const [key,name,endpoint] of [['a','clutch',0],['q','clutch',100],['i','brake',100],['k','brake',0],['o','gas',100],['l','gas',0]]){
+  for(const [key,name,endpoint] of [['a','clutch',0],['w','clutch',100],['i','brake',100],['k','brake',0],['o','gas',100],['l','gas',0]]){
     await hold(page,key,1400);await page.clock.runFor(50);expect(await value(page,name)).toBe(endpoint);
   }
 });
@@ -82,9 +82,9 @@ test('Stalled engine restarts in place and help describes the new keys',async({p
   expect(await page.evaluate(()=>document.documentElement.scrollHeight)).toBeLessThanOrEqual(600);
   await page.screenshot({path:'test-results/pc-stalled-1280x600.png',fullPage:true});
   await page.keyboard.press('Enter');await expect(page.locator('#engine')).toHaveText('● Đã tắt máy');
-  await hold(page,'q',5500);await page.keyboard.press('Enter');await expect(page.locator('#engine')).toHaveText('● Động cơ đang chạy');
+  await hold(page,'w',5500);await page.keyboard.press('Enter');await expect(page.locator('#engine')).toHaveText('● Động cơ đang chạy');
   await expect(page.locator('#gear')).toHaveText('1');await expect(page.locator('#start')).toBeDisabled();
-  await page.locator('#help').click();await expect(page.locator('#guide')).toContainText('Q tăng, A giảm');
+  await page.locator('#help').click();await expect(page.locator('#guide')).toContainText('W tăng, A giảm');
   const clutch=await value(page,'clutch');await page.keyboard.press('a');expect(await value(page,'clutch')).toBe(clutch);
   await page.locator('#close-help').click();await expect(page.locator('#overlay')).toBeVisible();
 });
