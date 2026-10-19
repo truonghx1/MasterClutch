@@ -4,9 +4,9 @@
 
 Mặc định là góc nhìn người ngồi trong khoang xe, có hai tay trên vô-lăng, gương, cần số và đồng hồ chạy theo trạng thái xe. Nút **Góc nhìn** chuyển về hình xe nhìn từ bên ngoài. Không cần đánh lái.
 
-Trên PC, bài tập và nhật ký ở bên trái, khung nhìn đường thu gọn ở trên, thông số xe và độ dốc ở giữa, bàn đạp và hộp số ở dưới cùng. Các điều khiển chính nằm trong màn hình laptop từ 1280×720. Có thể dùng bàn phím, nhấn giữ nút tăng/giảm hoặc kéo thanh mức bằng chuột. Giao diện tự xếp lại khi cửa sổ nhỏ hơn.
+Trên PC, bài tập và nhật ký ở bên trái, khung nhìn đường thu gọn ở trên, thông số xe và độ dốc ở giữa, bàn đạp và hộp số ở dưới cùng. Toàn bộ trang, bao gồm bài tập, gợi ý, thống kê, nhật ký và chân trang, vừa một màn hình; nhật ký dài cuộn bên trong ô riêng. Đã kiểm tra cả cửa sổ 1024×768 và 1280×600. Có thể dùng bàn phím, nhấn giữ nút tăng/giảm hoặc kéo thanh mức bằng chuột. Giao diện tự xếp lại khi cửa sổ nhỏ hơn.
 
-Mỗi lần nhấn chỉnh 3%. Giữ phím quá 0,15 giây sẽ tăng/giảm đều 30 điểm phần trăm mỗi giây; tốc độ không phụ thuộc tính năng lặp phím của hệ điều hành. Thả phím giữ nguyên mức, không tự nhả. Xe bắt đầu với côn 100% và phanh tay đang giữ.
+Mỗi lần nhấn ngắn chỉnh 3%. Giữ phím khoảng 1,3 giây sẽ đi hết từ 0% lên 100% hoặc ngược lại (80 điểm phần trăm/giây sau 0,1 giây đầu); tốc độ không phụ thuộc tính năng lặp phím của hệ điều hành. Thả phím giữ nguyên mức, không tự nhả. Xe bắt đầu với côn 100% và phanh tay đang giữ.
 
 ## Deploy lên Vercel từ GitHub
 

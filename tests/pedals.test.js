@@ -10,24 +10,33 @@ test('Each of the six keys adjusts its pedal by 3% and release holds the level',
     near(p.levels[name],.5+direction*.03);
   }
 });
-test('Holding adjusts at 30% per second after 150ms; repeat events do not accelerate it',()=>{
+test('Holding adjusts at 80% per second after 100ms; repeat events do not accelerate it',()=>{
   for(const hz of [30,60,120]){
     const p=new PedalControls();p.press('KeyO');
     for(let i=0;i<hz;i++){p.press('KeyO');p.step(1/hz)}
-    near(p.levels.gas,.285);p.lift('KeyO');p.step(10);near(p.levels.gas,.285);
+    near(p.levels.gas,.75);p.lift('KeyO');p.step(10);near(p.levels.gas,.75);
   }
 });
 test('Pedals adjust independently, opposite directions cancel and limits clamp',()=>{
   const p=new PedalControls();p.press('KeyA');p.press('KeyI');p.press('KeyO');p.step(1);
-  near(p.levels.clutch,.715);near(p.levels.brake,.285);near(p.levels.gas,.285);
-  p.press('KeyQ');p.step(1);near(p.levels.clutch,.715);
+  near(p.levels.clutch,.25);near(p.levels.brake,.75);near(p.levels.gas,.75);
+  p.press('KeyQ');p.step(1);near(p.levels.clutch,.25);
   p.lift('KeyQ');p.step(10);near(p.levels.clutch,0);near(p.levels.brake,1);near(p.levels.gas,1);
 });
 test('Keyboard and pointer sources do not double speed or release each other',()=>{
-  const p=new PedalControls();p.press('KeyO');p.press('KeyO',1);p.step(1);near(p.levels.gas,.285);
-  p.lift(1);p.step(1);near(p.levels.gas,.585);
-  p.release();p.step(1);near(p.levels.gas,.585);
+  const p=new PedalControls();p.press('KeyO');p.press('KeyO',1);p.step(.5);near(p.levels.gas,.35);
+  p.lift(1);p.step(.5);near(p.levels.gas,.75);
+  p.release();p.step(1);near(p.levels.gas,.75);
   p.reset();assert.deepEqual(p.levels,{clutch:1,brake:0,gas:0});assert.equal(p.active.size,0);
+});
+
+test('Every pedal reaches either endpoint within 1.5 seconds, but not before 1 second',()=>{
+  for(const [code,[name,direction]] of Object.entries(pedalKeys)){
+    const p=new PedalControls();p.set(name,direction===1?0:1);p.press(code);
+    p.step(1);assert.ok(p.levels[name]>0&&p.levels[name]<1);
+    p.step(.4);near(p.levels[name],direction===1?1:0);
+    p.lift(code);p.step(2);near(p.levels[name],direction===1?1:0);
+  }
 });
 test('Continuous lessons repeat the terrain without stopping or resetting the session',()=>{
   for(const route of Object.keys(routes)){
