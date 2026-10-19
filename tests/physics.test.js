@@ -2,7 +2,7 @@ import {test} from 'node:test';import assert from 'node:assert/strict';import {C
 const run=(c,seconds,input={})=>{for(let i=0;i<seconds*60;i++)c.step(1/60,input)};
 test('Cannot shift without disengaging clutch',()=>{let c=new Car();c.clutch=0;c.shift(1);assert.equal(c.gear,0);assert.equal(c.errors[0].code,'clutch')});
 test('Launch in first with throttle',()=>{let c=new Car();c.shift(1);run(c,1,{clutch:true,gas:true});run(c,5,{gas:true});assert.ok(c.v>2);assert.equal(c.running,true)});
-test('Releasing clutch with no throttle stalls',()=>{let c=new Car();c.shift(1);run(c,5);assert.equal(c.running,false);assert.equal(c.stalls,1)});
+test('Default clutch release without throttle can stall this training car',()=>{let c=new Car();c.shift(1);run(c,5);assert.equal(c.running,false);assert.equal(c.stalls,1)});
 test('Braking without clutch stalls, clutch prevents stall',()=>{let c=new Car();c.shift(1);run(c,1,{clutch:true,gas:true});run(c,5,{gas:true});run(c,8,{brake:true});assert.equal(c.running,false);c=new Car();c.shift(1);run(c,1,{clutch:true,gas:true});run(c,5,{gas:true});run(c,8,{clutch:true,brake:true});assert.equal(c.v,0);assert.equal(c.running,true)});
 test('Hill rolls back unless brakes held',()=>{let c=new Car('hill');run(c,3,{clutch:true});assert.ok(c.v<0);assert.ok(c.errors.some(e=>e.code==='rollback'));c=new Car('hill');run(c,3,{clutch:true,brake:true});assert.equal(c.v,0)});
 test('Reverse cannot be selected moving forward',()=>{let c=new Car();c.v=4;c.shift(-1);assert.equal(c.gear,0);assert.equal(c.errors[0].code,'reverse')});

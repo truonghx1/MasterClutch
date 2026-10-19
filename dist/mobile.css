@@ -12,6 +12,9 @@ button{touch-action:manipulation}
 .slope{background:#f5f8e9db;border-radius:8px;padding:10px;top:83px;right:20px}
 .mobile-hint{display:none}
 .pedal.held kbd{background:#dcecbf}
+.training-controls{grid-column:1 / -1;display:flex;gap:8px;order:2}
+.training-controls button{flex:1;min-height:44px;border:1px solid #cbd6bd;background:#f4f7ed;border-radius:6px;padding:9px;font:inherit;font-size:11px;touch-action:none}
+.training-controls button[aria-pressed="true"]{background:#34543d;color:#eff5df;border-color:#34543d}
 @media(max-width:760px){
   header{height:54px;padding-left:max(4%,env(safe-area-inset-left));padding-right:max(4%,env(safe-area-inset-right))}
   main{padding:16px max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}

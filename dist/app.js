@@ -1,12 +1,29 @@
 import {Car,routes} from './physics.js';
 import {drawCockpit} from './cockpit.js';
 const $=id=>document.getElementById(id);let car=new Car(),paused=false,started=false,last=0,seen=0;const keys=new Set(),pointers=new Map();const input={clutch:false,brake:false,gas:false};
-function syncInput(){for(const p of Object.keys(input))input[p]=keys.has(p)||[...pointers.values()].includes(p)}
-function release(){keys.clear();pointers.clear();syncInput()}
+let heldClutch=null;
+function syncInput(){
+  for(const p of Object.keys(input))input[p]=keys.has(p)||[...pointers.values()].includes(p);
+  if(input.clutch)heldClutch=null;
+  else if(heldClutch!==null)input.clutch=heldClutch;
+}
+function release(){keys.clear();pointers.clear();heldClutch=null;syncInput()}
 function reset(route=car.route){car=new Car(route);paused=false;started=false;seen=0;release();$('log-count').textContent='0 SỰ KIỆN';$('pause').textContent='Ⅱ Tạm dừng';$('logs').innerHTML='<p class="empty">✓ &nbsp; Chưa có lỗi. Chậm rãi để cảm nhận điểm bắt côn.</p>';$('overlay').hidden=true;$('scene-name').textContent=routes[route].name.toLocaleUpperCase('vi');document.querySelectorAll('[data-route]').forEach(b=>b.classList.toggle('selected',b.dataset.route===route));coach();render()}
-function coach(){let title='Bắt đầu thật nhẹ nhàng.',text='Giữ A để đạp hết côn, nhấn 1 vào số. Giữ L thêm ga rồi nhả A từ từ để xe lăn bánh.';if(!car.running){title='Bình tĩnh, khởi động lại.';text='Giữ A + J để ngắt côn và giữ xe. Nhấn Enter khởi động, chọn số 1 rồi thử lại.'}else if(car.grade>.03){title='Giữ lực kéo trên dốc.';text='Dùng số thấp. Khi khởi hành, giữ phanh và thêm ga, nhả côn đến điểm bắt rồi mới nhả phanh.'}else if(car.grade<-.03){title='Để động cơ hỗ trợ phanh.';text='Chọn số thấp phù hợp, nhả côn để giữ phanh động cơ. Phối hợp J để kiểm soát tốc độ.'}else if(Math.abs(car.v)>2){title='Lắng nghe vòng tua.';text='Khi vòng tua tăng, nhả ga, đạp hết côn rồi lên số. Khi dừng, nhớ đạp côn trước khi động cơ bị ì.'}$('coach-title').textContent=title;$('coach-text').textContent=text}
+function coach(){let title='Bắt đầu thật nhẹ nhàng.',text='Giữ A để đạp hết côn, nhấn 1 vào số. Giữ L thêm ga rồi nhả A từ từ để xe lăn bánh.';if(!car.running){title='Bình tĩnh, khởi động lại.';text='Giữ A + J để ngắt côn và giữ xe. Nhấn Enter khởi động, chọn số 1 rồi thử lại.'}else if(car.grade>.03){title='Giữ lực kéo trên dốc.';text='Bật phanh tay (H), chọn số 1, nhả phanh chân rồi thêm ga và nhả côn tới điểm bắt. Nhả phanh tay khi đủ lực kéo; nếu trôi, phanh dừng và thử lại.'}else if(car.grade<-.03){title='Để động cơ hỗ trợ phanh.';text='Chọn số thấp phù hợp, nhả côn để giữ phanh động cơ. Phối hợp J để kiểm soát tốc độ.'}else if(Math.abs(car.v)>2){title='Lắng nghe vòng tua.';text='Khi vòng tua tăng, nhả ga, đạp hết côn rồi lên số. Khi dừng, nhớ đạp côn trước khi động cơ bị ì.'}$('coach-title').textContent=title;$('coach-text').textContent=text}
 function togglePause(){if(car.finished)return;paused=!paused;release();$('overlay').hidden=!paused;$('overlay-title').textContent='Một nhịp nghỉ.';$('overlay-text').textContent='Buổi tập được giữ nguyên. Tiếp tục khi bạn sẵn sàng.';$('resume').textContent='Tiếp tục';$('pause').textContent=paused?'▶ Tiếp tục':'Ⅱ Tạm dừng'}
 const map={KeyA:'clutch',KeyJ:'brake',KeyL:'gas'};
+function toggleHandbrake(){if(paused||car.finished||$('guide').open)return;car.handbrake=!car.handbrake;started=true;updateTrainingControls()}
+function toggleClutchHold(){
+  if(paused||car.finished||$('guide').open)return;
+  keys.delete('clutch');
+  for(const [id,pedal] of pointers)if(pedal==='clutch')pointers.delete(id);
+  heldClutch=heldClutch===null?car.clutch:null;syncInput();started=true;updateTrainingControls();
+}
+window.addEventListener('keydown',event=>{
+  if(!['KeyH','KeyS'].includes(event.code)||$('guide').open)return;
+  event.preventDefault();if(event.repeat)return;
+  if(event.code==='KeyH')toggleHandbrake();else toggleClutchHold();
+});
 window.addEventListener('keydown',e=>{if($('guide').open)return;if(map[e.code]||/^Digit[1-6]$/.test(e.code)||['KeyN','Enter','Space'].includes(e.code)){e.preventDefault();if(e.repeat)return;if(e.code==='Space'){togglePause();return}if(paused||car.finished)return;started=true;if(map[e.code])keys.add(map[e.code]);else if(e.code==='Enter')car.start();else car.shift(e.code==='KeyN'?0:e.code==='Digit6'?-1:Number(e.code.slice(-1)));syncInput();render()}});
 window.addEventListener('keyup',e=>{if(map[e.code]){keys.delete(map[e.code]);syncInput()}});window.addEventListener('blur',()=>{release();if(started&&!paused&&!car.finished)togglePause()});document.addEventListener('visibilitychange',()=>{if(document.hidden){release();if(started&&!paused&&!car.finished)togglePause()}});
 document.querySelectorAll('[data-pedal]').forEach(b=>{b.addEventListener('pointerdown',e=>{if(paused||car.finished)return;e.preventDefault();started=true;b.setPointerCapture(e.pointerId);pointers.set(e.pointerId,b.dataset.pedal);syncInput()});for(const event of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(event,e=>{pointers.delete(e.pointerId);syncInput()})});
@@ -38,11 +55,22 @@ for(const button of document.querySelectorAll('[data-gear]')){
   });
 }
 const mobileHint=document.createElement('p');mobileHint.className='mobile-hint';
-mobileHint.textContent='Chạm giữ bàn đạp bằng nhiều ngón. Giữ Côn → chọn số 1 → thêm Ga → thả Côn. Xoay ngang để có khoang lái rộng hơn.';
+mobileHint.textContent='Giữ Côn → chọn số 1 → thêm Ga → thả Côn. Dùng “Giữ mức côn” để giữ điểm bắt. Đề-pa dốc: bật phanh tay trước, phối hợp côn–ga rồi nhả phanh tay.';
 document.querySelector('.controls').before(mobileHint);
+const trainingControls=document.createElement('div');trainingControls.className='training-controls';
+const handbrakeButton=document.createElement('button');handbrakeButton.id='handbrake';handbrakeButton.onclick=toggleHandbrake;
+const clutchHoldButton=document.createElement('button');clutchHoldButton.id='clutch-hold';clutchHoldButton.onclick=toggleClutchHold;
+trainingControls.append(handbrakeButton,clutchHoldButton);document.querySelector('.controls').append(trainingControls);
+function updateTrainingControls(){
+  handbrakeButton.textContent=car.handbrake?'Phanh tay: ĐANG GIỮ · H':'Phanh tay: ĐÃ NHẢ · H';
+  handbrakeButton.setAttribute('aria-pressed',String(car.handbrake));
+  clutchHoldButton.textContent=heldClutch===null?'Giữ mức côn · S':`Đang giữ côn ${Math.round(heldClutch*100)}% · S để nhả`;
+  clutchHoldButton.setAttribute('aria-pressed',String(heldClutch!==null));
+}
 function frame(t){
   const dt=last?Math.min((t-last)/1000,.05):0;last=t;
   if(started&&!paused&&!$('guide').open){car.step(dt,input);render()}
+  updateTrainingControls();
   if(cockpitView){
     const w=canvas.clientWidth,h=canvas.clientHeight,dpr=Math.min(devicePixelRatio||1,2);
     if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr)}

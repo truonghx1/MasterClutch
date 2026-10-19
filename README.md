@@ -34,8 +34,19 @@ Mở http://127.0.0.1:5173. Kiểm thử mô hình xe: `npm test`.
 - Giữ J: phanh; giữ L: ga.
 - 1–5: số tiến; 6: số lùi; N: số mo.
 - Enter: khởi động lại; Space: tạm dừng.
+- H hoặc nút Phanh tay: bật/tắt phanh tay để giữ xe khi đề-pa dốc.
+- S hoặc nút Giữ mức côn: giữ nguyên vị trí côn hiện tại; bấm lần nữa để nhả tiếp. Đạp A luôn hủy giữ mức và đạp hết côn. Đây là hỗ trợ thao tác bàn phím/cảm ứng, không phải cơ cấu khóa côn trên xe thật.
 - Các bàn đạp hỗ trợ chạm giữ đồng thời trên màn hình cảm ứng.
 
 Ba bài tập có các đoạn đường bằng, lên và xuống dốc dài khác nhau. Nhật ký giải thích lỗi gài số, vượt vòng tua, tắt máy, trôi lùi, động cơ ì và thả trôi xuống dốc. Dừng mô phỏng khi mất tiêu điểm để tránh kẹt phím.
 
 Mô hình vật lý được đơn giản hóa để luyện phối hợp bàn phím; không mô phỏng đầy đủ cảm giác bàn đạp hoặc thay thế thực hành trên xe. Phông Google Fonts có phông hệ thống dự phòng. Không lưu dữ liệu người dùng.
+
+## Nguyên lý và phạm vi bài tập
+
+- Côn truyền tải giữa động cơ và bánh xe. Tải quá lớn làm vòng tua tụt và tắt máy; số cao ở tốc độ thấp, phanh giữ xe khi côn bắt, hoặc trôi ngược chiều số có thể gây tắt máy.
+- Không ga không đồng nghĩa luôn tắt máy: nhả côn đủ chậm ở số 1 trên đường bằng có thể làm xe bò. Dùng Giữ mức côn để giữ điểm bắt trong lúc xe tăng tốc.
+- Ga vừa đủ kết hợp nhả côn dần giúp khởi hành. Khi phanh dừng, đạp côn trước khi vòng tua tụt quá thấp.
+- Đề-pa dốc: giữ phanh chân, bật phanh tay, đạp côn và chọn số 1. Nhả phanh chân, thêm ga, nhả côn tới điểm bắt; nhả phanh tay khi đủ lực kéo. Nếu trôi, phanh dừng và thử lại. Không giữ xe lâu trên dốc bằng côn trượt.
+- Giới hạn tua khoảng 6.000 RPM giảm lực kéo khi giữ ga. Nó không ngăn bánh xe ép động cơ quá tua khi xuống dốc; khi đó cần phanh giảm tốc. Bài tập chặn thao tác về số gây quá tua.
+- Các ngưỡng chỉ là cấu hình một xe giả định; không mô phỏng hỏng hóc, hao mòn, nhiệt côn hoặc hỗ trợ giữ dốc tự động.
