@@ -30,26 +30,26 @@
   <div id="feedback" class="feedback" aria-live="polite"><b id="feedback-title">Sẵn sàng khởi hành</b><span id="feedback-detail">Giữ Côn → số 1 → thêm Ga → nhả Côn và phanh tay.</span><button id="feedback-more" aria-label="Xem giải thích và nhật ký">Chi tiết</button></div>
   <section class="driving-controls" aria-label="Điều khiển xe">
     <div class="left-controls">
-      <button id="clutch-hold" class="aux" aria-pressed="false">Giữ mức côn</button>
-      <button class="pedal clutch" data-pedal="clutch" aria-label="Chạm giữ để đạp côn"><span>CÔN</span><strong id="clutch-percent">100%</strong><div class="pedal-track"><i></i></div><small>Giữ để đạp</small></button>
+      <button id="start" class="aux" aria-label="Bật động cơ" disabled>● Máy đang chạy</button>
+      <button class="pedal clutch" data-pedal="clutch" aria-label="Vuốt lên tăng côn, vuốt xuống giảm côn, thả tay giữ mức"><span>CÔN</span><strong id="clutch-percent">100%</strong><div class="pedal-track"><i></i></div><small>↕ Vuốt rồi thả</small></button>
     </div>
     <div class="center-controls">
-      <div class="gear-buttons" aria-label="Chọn số"><button data-gear="0" class="active" aria-pressed="true">N</button><button data-gear="1">1</button><button data-gear="2">2</button><button data-gear="3">3</button><button data-gear="-1">R</button><button data-gear="4">4</button><button data-gear="5">5</button><button id="start" aria-label="Khởi động động cơ">⏻</button></div>
+      <div class="gear-buttons" aria-label="Chọn số"><button data-gear="0" class="active" aria-pressed="true">N</button><button data-gear="1">1</button><button data-gear="2">2</button><button data-gear="3">3</button><button data-gear="-1">R</button><button data-gear="4">4</button><button data-gear="5">5</button></div>
       <button id="handbrake" class="aux" aria-pressed="true">Phanh tay · ĐANG GIỮ</button>
-      <small class="control-tip">Ga: chạm nhẹ, kéo lên để tăng</small>
+      <small class="control-tip">↕ Lên tăng · xuống giảm · thả giữ mức</small>
     </div>
     <div class="right-controls">
-      <button class="pedal brake" data-pedal="brake" aria-label="Chạm giữ để phanh"><span>PHANH</span><strong id="brake-percent">0%</strong><div class="pedal-track"><i></i></div><small>Giữ để dừng</small></button>
-      <button class="pedal gas" data-pedal="gas" aria-label="Chạm giữ ga nhẹ, kéo lên để tăng ga"><span>GA</span><strong id="gas-percent">0%</strong><div class="pedal-track"><i></i></div><small>Kéo lên tăng ga</small></button>
+      <button class="pedal brake" data-pedal="brake" aria-label="Vuốt lên tăng phanh, vuốt xuống giảm phanh, thả tay giữ mức"><span>PHANH</span><strong id="brake-percent">0%</strong><div class="pedal-track"><i></i></div><small>↕ Vuốt rồi thả</small></button>
+      <button class="pedal gas" data-pedal="gas" aria-label="Vuốt lên tăng ga, vuốt xuống giảm ga, thả tay giữ mức"><span>GA</span><strong id="gas-percent">0%</strong><div class="pedal-track"><i></i></div><small>↕ Vuốt rồi thả</small></button>
     </div>
   </section>
   <section id="welcome" class="curtain">
-    <div class="card"><div class="eyebrow">CLUTCH / MOBILE DRIVE</div><h1>Cầm ngang máy.<br>Làm chủ côn số.</h1><p>Côn bên trái. Phanh và ga bên phải.<br>Chạm giữ nhiều nút cùng lúc như chơi game.</p><button id="play" class="primary">Bắt đầu lái →</button><small>Không cần cài ứng dụng · Không cần đánh lái</small><a href="desktop.html">Mở bản desktop</a></div>
+    <div class="card"><div class="eyebrow">CLUTCH / MOBILE DRIVE</div><h1>Cầm ngang máy.<br>Làm chủ côn số.</h1><p>Côn bên trái. Phanh và ga bên phải.<br>Vuốt lên để tăng, xuống để giảm; thả tay giữ nguyên mức.<br>Tập không giới hạn. Chọn bài khác ở thanh trên khi muốn đổi.</p><button id="play" class="primary">Bắt đầu lái →</button><small>Không cần cài ứng dụng · Không cần đánh lái</small><a href="desktop.html">Mở bản desktop</a></div>
   </section>
   <section id="paused" class="curtain" hidden><div class="card"><h2 id="pause-title">Đã tạm dừng</h2><p id="pause-detail">Thả tay và nghỉ một chút. Xe đang được giữ nguyên.</p><button id="resume" class="primary">Tiếp tục</button></div></section>
   <section id="rotate" class="curtain" hidden><div class="card"><div class="rotate-icon">▯ ↻ ▭</div><h2>Xoay ngang điện thoại</h2><p>Bật tự động xoay màn hình, rồi cầm ngang máy.<br>Buổi tập được tạm dừng khi bạn xoay máy.</p><button id="rotate-fullscreen">Thử toàn màn hình</button><small>Nếu trình duyệt không hỗ trợ toàn màn hình, bạn vẫn chơi được khi cầm ngang.</small></div></section>
   <dialog id="guide"><button id="close-help" class="close" aria-label="Đóng">✕</button><h2>Lái chậm, phối hợp đúng.</h2>
-    <ol><li><b>Khởi hành:</b> giữ Côn đến 100%, chọn 1. Chạm giữ Ga, thả Côn từ từ rồi nhả phanh tay khi đủ lực kéo.</li><li><b>Ga:</b> chạm để thêm ga nhẹ. Kéo ngón lên để tăng, kéo xuống để giảm. Nhấc ngón để nhả ga.</li><li><b>Điểm bắt côn:</b> khi đang nhả côn, chạm “Giữ mức côn” để giữ mức hiện tại. Chạm lại để nhả tiếp; đạp Côn để ngắt hoàn toàn.</li><li><b>Dừng:</b> nhả Ga, giữ Phanh và đạp Côn trước khi vòng tua tụt thấp.</li><li><b>Lên dốc:</b> dùng phanh tay để giữ xe, chọn số 1, phối hợp côn–ga rồi nhả phanh tay. Nếu trôi, giữ Phanh và thử lại.</li><li><b>Xuống dốc:</b> dùng số phù hợp để có phanh động cơ, phối hợp phanh chân. Tránh về N hoặc giữ côn suốt dốc.</li><li><b>Tắt máy:</b> giữ Côn + Phanh, chạm ⏻, chọn số phù hợp rồi thử lại.</li></ol><p>Giữ mức côn là trợ giúp của trò chơi. Mô hình dùng để học nguyên lý; điểm bắt côn trên mỗi xe thật khác nhau.</p><h3>Nhật ký buổi tập</h3><div id="logs">Chưa có lỗi.</div>
+    <ol><li><b>Bàn đạp:</b> vuốt Côn, Phanh hoặc Ga lên để tăng, xuống để giảm. Thả tay giữ nguyên mức. Chạm lại để vuốt tiếp từ mức đó; vuốt xuống 0% để nhả hết.</li><li><b>Khởi hành:</b> đưa Côn lên 100%, chọn số 1. Tăng Ga vừa đủ, giảm Côn từ từ tới điểm bắt rồi nhả phanh tay khi đủ lực kéo.</li><li><b>Dừng:</b> giảm Ga về 0%, tăng Phanh và đưa Côn lên 100% trước khi vòng tua tụt thấp.</li><li><b>Lên dốc:</b> dùng phanh tay để giữ xe, chọn số 1, phối hợp côn–ga rồi nhả phanh tay. Nếu trôi, tăng Phanh và thử lại.</li><li><b>Xuống dốc:</b> dùng số phù hợp để có phanh động cơ, phối hợp phanh chân. Tránh về N hoặc giữ côn suốt dốc.</li><li><b>Tắt máy:</b> đưa Côn và Phanh lên 100%, giảm Ga về 0%, chạm “Bật động cơ” phía trên bàn đạp Côn, rồi chọn số phù hợp để tiếp tục.</li><li><b>Bài tập:</b> đường lặp lại liên tục, không tự kết thúc hoặc đổi bài. Chọn bài khác ở thanh trên khi bạn muốn chuyển. Tạm dừng giữ nguyên mức bàn đạp; “Tập lại” đưa xe về ban đầu.</li></ol><p>Giữ mức bàn đạp là trợ giúp của trò chơi. Mô hình dùng để học nguyên lý; điểm bắt côn trên mỗi xe thật khác nhau.</p><h3>Nhật ký buổi tập</h3><div id="logs">Chưa có lỗi.</div>
   </dialog>
 </main>
 <script type="module" src="mobile-game.js"></script>

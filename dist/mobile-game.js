@@ -5,29 +5,28 @@ const $=id=>document.getElementById(id);
 const canvas=$('road'),ctx=canvas.getContext('2d');
 const portrait=matchMedia('(orientation: portrait)');
 const touches=new Map(),keys=new Set();
-let car=new Car(),mode='welcome',heldClutch=null,lastFrame=0,lastPaint=0;
+let car=new Car('basic',{continuous:true,directPedals:true}),mode='welcome',lastFrame=0,lastPaint=0;
 let seenErrors=0,noticeUntil=0;
 car.handbrake=true;
-const input={clutch:0,brake:0,gas:0};
+const levels={clutch:1,brake:0,gas:0};
+const input={...levels};
 const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
 
 function syncInput(){
   for(const name of Object.keys(input)){
-    input[name]=keys.has(name)?1:0;
-    for(const touch of touches.values())if(touch.name===name)input[name]=Math.max(input[name],touch.value);
+    input[name]=keys.has(name)?1:levels[name];
   }
-  if(input.clutch>0)heldClutch=null;
-  else if(heldClutch!==null)input.clutch=heldClutch;
 }
-function clearInput(){touches.clear();keys.clear();heldClutch=null;syncInput()}
+// End gestures without changing the pedal positions chosen by the player.
+function clearInput(){touches.clear();keys.clear();syncInput()}
 function playable(){return mode==='playing'&&!portrait.matches&&!$('guide').open}
 function feedback(title,detail,error=false){
   $('feedback-title').textContent=title;$('feedback-detail').textContent=detail;
   $('feedback').classList.toggle('error',error);
 }
 function normalFeedback(){
-  if(!car.running)feedback('Đã tắt máy — khởi động lại','Giữ Côn + Phanh, chạm ⏻ rồi chọn số 1.',true);
-  else if(car.handbrake)feedback('Phanh tay đang giữ xe','Giữ Côn → số 1 → thêm Ga → nhả Côn đến điểm bắt → nhả phanh tay.');
+  if(!car.running)feedback('Đã tắt máy — khởi động lại','Vuốt Côn và Phanh lên 100%, chạm Bật động cơ rồi chọn số phù hợp.',true);
+  else if(car.handbrake)feedback('Phanh tay đang giữ xe','Côn 100% → số 1 → tăng Ga → giảm Côn tới điểm bắt → nhả phanh tay.');
   else if(car.grade>.03)feedback('Lên dốc: giữ đủ lực kéo','Chọn số thấp phù hợp. Nếu trôi lùi, phanh dừng rồi đề-pa lại.');
   else if(car.grade<-.03)feedback('Xuống dốc: dùng phanh động cơ','Giữ số phù hợp, nhả Côn và dùng Phanh để kiểm soát tốc độ.');
   else feedback('Nhẹ ga, nhả côn từ từ','Khi dừng, đạp Côn trước khi vòng tua tụt quá thấp.');
@@ -43,7 +42,8 @@ function resume(){
   clearInput();mode='playing';lastFrame=0;$('paused').hidden=true;$('welcome').hidden=true;$('pause').textContent='Ⅱ';render();
 }
 function reset(){
-  car=new Car($('route').value);car.handbrake=true;seenErrors=0;noticeUntil=0;
+  car=new Car($('route').value,{continuous:true,directPedals:true});car.handbrake=true;seenErrors=0;noticeUntil=0;
+  Object.assign(levels,{clutch:1,brake:0,gas:0});
   clearInput();$('logs').textContent='Chưa có lỗi.';$('paused').hidden=true;
   mode='welcome';$('welcome').hidden=false;$('pause').textContent='Ⅱ';render();
 }
@@ -74,14 +74,18 @@ for(const button of document.querySelectorAll('[data-pedal]')){
     if(!playable()||event.button!==0)return;
     event.preventDefault();
     const name=button.dataset.pedal;
-    touches.set(event.pointerId,{name,startY:event.clientY,value:name==='gas'?.4:1});
+    if([...touches.values()].some(touch=>touch.name===name))return;
+    touches.set(event.pointerId,{name,startY:event.clientY,startValue:levels[name],range:Math.min(100,button.clientHeight-16)});
     try{button.setPointerCapture(event.pointerId)}catch{/* Global release listeners also clear the finger. */}
     syncInput();render();
   });
   button.addEventListener('pointermove',event=>{
     const touch=touches.get(event.pointerId);
-    if(!touch||touch.name!=='gas')return;
-    event.preventDefault();touch.value=clamp(.4+(touch.startY-event.clientY)/100,0,1);syncInput();
+    if(!touch)return;
+    event.preventDefault();
+    levels[touch.name]=clamp(touch.startValue+(touch.startY-event.clientY)/touch.range,0,1);
+    touch.startValue=levels[touch.name];touch.startY=event.clientY;
+    syncInput();
   });
   button.addEventListener('lostpointercapture',event=>{touches.delete(event.pointerId);syncInput()});
   button.addEventListener('contextmenu',event=>event.preventDefault());
@@ -93,16 +97,11 @@ for(const button of document.querySelectorAll('[data-gear]'))action(button,()=>{
   if(playable()){car.shift(Number(button.dataset.gear));render()}
 });
 function handbrake(){if(playable()){car.handbrake=!car.handbrake;render()}}
-function holdClutch(){
-  if(!playable())return;
-  keys.delete('clutch');for(const [id,touch] of touches)if(touch.name==='clutch')touches.delete(id);
-  heldClutch=heldClutch===null?car.clutch:null;syncInput();render();
-}
-action($('handbrake'),handbrake);action($('clutch-hold'),holdClutch);
+action($('handbrake'),handbrake);
 action($('start'),()=>{if(playable()){car.start();render()}});
 action($('pause'),()=>mode==='paused'?resume():pause());
 action($('restart'),reset);
-action($('resume'),()=>mode==='complete'?reset():resume());
+action($('resume'),resume);
 $('route').addEventListener('change',reset);
 
 async function fullscreen(){
@@ -125,14 +124,14 @@ const keyboard={KeyA:'clutch',KeyJ:'brake',KeyL:'gas'};
 window.addEventListener('keydown',event=>{
   if(['SELECT','INPUT','TEXTAREA','BUTTON'].includes(event.target.tagName)||$('guide').open)return;
   if(keyboard[event.code]){
-    event.preventDefault();if(playable()){keys.add(keyboard[event.code]);syncInput()}return;
+    event.preventDefault();if(playable()){levels[keyboard[event.code]]=0;keys.add(keyboard[event.code]);syncInput()}return;
   }
   if(event.repeat)return;
   if(event.code==='Space'){event.preventDefault();mode==='paused'?resume():pause();return}
   if(!playable())return;
   if(/^Digit[1-6]$/.test(event.code))car.shift(event.code==='Digit6'?-1:Number(event.code.slice(-1)));
   if(event.code==='KeyN')car.shift(0);
-  if(event.code==='KeyH')handbrake();if(event.code==='KeyS')holdClutch();if(event.code==='Enter')car.start();
+  if(event.code==='KeyH')handbrake();if(event.code==='Enter')car.start();
 });
 window.addEventListener('keyup',event=>{if(keyboard[event.code]){keys.delete(keyboard[event.code]);syncInput()}});
 
@@ -144,10 +143,12 @@ function render(){
   $('gear').textContent=car.gear===0?'N':car.gear===-1?'R':car.gear;
   $('grade').textContent=(car.grade>0?'+':'')+Math.round(car.grade*100)+'%';
   $('engine').textContent=car.running?'● Máy đang chạy':'● ĐÃ TẮT MÁY';
-  $('distance').textContent=(car.v<-.1?'← ':'')+Math.round(car.x)+' / '+car.length+' m';
+  $('start').disabled=car.running;
+  $('start').textContent=car.running?'● Máy đang chạy':'⏻ Bật động cơ';
+  $('distance').textContent=(car.v<-.1?'← ':'')+Math.round(car.x)+' m · Tập tự do';
   $('time').textContent=Math.floor(car.time/60).toString().padStart(2,'0')+':'+Math.floor(car.time%60).toString().padStart(2,'0');
   $('fault-count').textContent=car.errors.length+' lỗi';
-  $('progress').style.width=clamp(car.x/car.length*100,0,100)+'%';
+  $('progress').style.width=car.routePosition/car.length*100+'%';
   for(const button of document.querySelectorAll('[data-pedal]')){
     const name=button.dataset.pedal,value=Math.round(car[name]*100);
     $(name+'-percent').textContent=value+'%';button.querySelector('i').style.width=value+'%';
@@ -159,8 +160,6 @@ function render(){
   }
   $('handbrake').textContent=car.handbrake?'Phanh tay · ĐANG GIỮ':'Phanh tay · ĐÃ NHẢ';
   $('handbrake').setAttribute('aria-pressed',String(car.handbrake));
-  $('clutch-hold').textContent=heldClutch===null?'Giữ mức côn':`Giữ ${Math.round(heldClutch*100)}% · Nhả`;
-  $('clutch-hold').setAttribute('aria-pressed',String(heldClutch!==null));
   if(seenErrors!==car.errors.length){
     seenErrors=car.errors.length;noticeUntil=car.time+8;
     const error=car.errors[0];feedback(error.title,error.detail,true);
@@ -174,12 +173,6 @@ function frame(now){
   const dt=lastFrame?Math.min((now-lastFrame)/1000,.05):0;lastFrame=now;
   if(playable()){
     car.step(dt,input);
-    if(car.finished){
-      mode='complete';clearInput();$('paused').hidden=false;
-      $('pause-title').textContent='Hoàn thành chặng đường!';
-      $('pause-detail').textContent=`${car.errors.length} lỗi thao tác · ${car.stalls} lần tắt máy. Tập lại để phối hợp mượt hơn.`;
-      $('resume').textContent='Tập lại';
-    }
   }
   // Render at most 30 times per second, with capped canvas resolution for mobile GPUs.
   if(now-lastPaint>=1000/30){

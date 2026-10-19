@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {Car} from '../dist/physics.js';
+import {Car,routes} from '../dist/physics.js';
 const run=(c,seconds,input={},hz=60)=>{for(let i=0;i<Math.round(seconds*hz);i++)c.step(1/hz,input)};
 const launch=()=>{const c=new Car();c.shift(1);run(c,1,{clutch:true,gas:.35});run(c,5,{gas:.35});return c};
 
@@ -91,4 +91,34 @@ test('Hill launch is achievable with the actual on/off keyboard pedals',()=>{
   assert.equal(c.running,true);assert.equal(c.v,0);
   c.handbrake=false;run(c,3,{gas:true});
   assert.equal(c.running,true);assert.ok(c.v>1);
+});
+
+test('Continuous lessons repeat without stopping or resetting the session',()=>{
+  for(const route of Object.keys(routes)){
+    const c=new Car(route,{continuous:true});c.fault('example','Example','Preserved log');
+    for(let lap=1;lap<=3;lap++){
+      c.x=lap*c.length-.01;c.v=10;const previousTime=c.time;
+      c.step(.1,{clutch:1});
+      assert.equal(c.finished,false);assert.ok(c.v>9);assert.ok(c.x>lap*c.length);assert.ok(c.time>previousTime);
+      assert.equal(c.route,route);assert.ok(c.errors.some(error=>error.code==='example'));assert.equal(c.grade,routes[route].segments[0][1]);
+    }
+    c.x=c.length*3+routes[route].segments[0][0]+1;assert.equal(c.grade,routes[route].segments[1][1]);
+    c.x=-1;assert.equal(c.routePosition,c.length-1);assert.equal(c.grade,routes[route].segments.at(-1)[1]);
+  }
+});
+
+test('Default desktop lessons still finish at the route end',()=>{
+  const c=new Car();c.x=c.length-.01;c.v=10;c.step(.1,{clutch:1});
+  assert.equal(c.finished,true);assert.equal(c.x,c.length);assert.equal(c.v,0);
+});
+
+test('Direct pedals follow the swipe level immediately and stay there',()=>{
+  const c=new Car('basic',{directPedals:true});
+  for(const level of [.6,.35,1,0]){
+    const input={clutch:level,brake:level,gas:level};
+    c.step(1/60,input);
+    for(const name of Object.keys(input))assert.equal(c[name],level);
+    run(c,.5,input);
+    for(const name of Object.keys(input))assert.equal(c[name],level);
+  }
 });

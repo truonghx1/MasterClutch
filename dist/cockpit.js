@@ -14,8 +14,12 @@ export function drawCockpit(ctx, w, h, car, routes) {
     points.forEach(([x,y], i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.stroke();
   };
   const elevation = x => {
-    if(x<0)return x*routes[car.route].segments[0][1];
     let result=0;
+    if(car.continuous){
+      const laps=Math.floor(x/car.length);
+      result=laps*routes[car.route].segments.reduce((sum,[length,grade])=>sum+length*grade,0);
+      x=((x%car.length)+car.length)%car.length;
+    }else if(x<0)return x*routes[car.route].segments[0][1];
     for(const [length, grade] of routes[car.route].segments){
       const distance=Math.min(x,length);result+=distance*grade;x-=distance;if(x<=0)break;
     }

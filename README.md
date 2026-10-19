@@ -5,10 +5,11 @@
 Trang `/` trên branch này là bản mobile: xoay ngang điện thoại rồi chạm **Bắt đầu lái**. Trang `/desktop.html` giữ giao diện desktop trước đó. Mô hình xe và các bài tập dùng chung.
 
 - Toàn bộ điều khiển nằm trong một màn hình ngang: côn bên trái, số ở giữa, phanh/ga bên phải; không cần cuộn khi chơi.
-- Chạm giữ côn và dùng ngón khác chọn số. Ga mặc định nhẹ 40%; kéo ngón lên để tăng, xuống để giảm, nhấc tay để nhả.
+- Côn, phanh và ga: chạm giữ rồi vuốt lên để tăng, xuống để giảm. Dừng vuốt hoặc nhấc tay đều giữ nguyên mức; lần chạm sau điều chỉnh tiếp từ mức đang có. Chạm đơn không thay đổi mức. Vuốt xuống 0% để nhả hết.
 - Xe bắt đầu với phanh tay đang giữ. Khởi hành bằng số 1, thêm ga, nhả côn tới điểm bắt rồi chạm nhả phanh tay.
-- Nút **Giữ mức côn** giữ điểm bắt khi cần; chạm lại để nhả tiếp. Nút **Chi tiết** tạm dừng và mở giải thích lỗi/nhật ký.
-- Xoay về dọc, chuyển ứng dụng hoặc mất tiêu điểm sẽ tạm dừng và hủy trạng thái chạm để tránh kẹt bàn đạp. Chạm **Tiếp tục** khi quay lại.
+- Khi tắt máy, đưa côn và phanh lên 100%, ga về 0%, rồi chạm **Bật động cơ** phía trên bàn đạp côn để khởi động lại tại chỗ. Nút **Chi tiết** tạm dừng và mở giải thích lỗi/nhật ký.
+- Mỗi bài tập lặp lại các đoạn đường không giới hạn, giữ nguyên xe, thời gian và nhật ký khi qua cuối chặng. Người chơi tự chọn bài khác ở thanh trên khi muốn đổi.
+- Xoay về dọc, chuyển ứng dụng hoặc mất tiêu điểm sẽ tạm dừng và hủy thao tác chạm, giữ nguyên mức bàn đạp đã chọn. Chạm **Tiếp tục** khi quay lại; **Tập lại** đặt lại xe và các mức bàn đạp.
 - Nút toàn màn hình là tùy chọn. Nếu trình duyệt không hỗ trợ, bật tự động xoay và cầm ngang để chơi trong trình duyệt bình thường.
 
 ### Thử bằng điện thoại trong cùng Wi-Fi
@@ -36,7 +37,7 @@ npm test
 npm run test:e2e
 ```
 
-Trên Windows, kiểm thử Chromium dùng Microsoft Edge đã cài. Trên Linux/macOS chạy thêm `npx playwright install chromium`. Kiểm thử gồm kích thước màn hình ngang, khởi hành bằng đa chạm, nhả/hủy chạm, kéo ga, xoay máy và tạm dừng. WebKit kiểm tra giao diện và thao tác chạm đơn; kiểm thử đa chạm gốc dùng Chromium CDP. Giả lập trình duyệt không thay thế kiểm tra trên thiết bị iOS/Android thật.
+Trên Windows, kiểm thử Chromium dùng Microsoft Edge đã cài. Trên Linux/macOS chạy thêm `npx playwright install chromium`. Kiểm thử gồm kích thước màn hình ngang, vuốt và giữ mức cả ba bàn đạp, khởi hành bằng đa chạm, khởi động lại sau tắt máy, chạy qua cuối chặng, chọn bài, xoay máy và tạm dừng. Chromium và WebKit kiểm tra giao diện và thao tác bàn đạp; kiểm thử đa chạm gốc dùng Chromium CDP. Giả lập trình duyệt không thay thế kiểm tra trên thiết bị iOS/Android thật.
 
 ## Bản desktop (`/desktop.html`)
 
