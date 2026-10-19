@@ -11,15 +11,27 @@ const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
 const pedal=v=>typeof v==='number'&&Number.isFinite(v)?clamp(v,0,1):v===true?1:0;
 const approach=(v,t,r,dt)=>v+clamp(t-v,-r*dt,r*dt);
 export class Car{
-  constructor(route='basic'){
+  constructor(route='basic',{continuous=false,directPedals=false}={}){
+    this.continuous=continuous;this.directPedals=directPedals;
     this.route=routes[route]?route:'basic';this.x=0;this.v=0;this.rpm=IDLE;this.gear=0;
     this.clutch=1;this.gas=0;this.brake=0;this.handbrake=false;
     this.running=true;this.stallTime=0;this.time=0;this.errors=[];this.cooldown={};
     this.finished=false;this.stalls=0;this.maxSpeed=0;
   }
   get length(){return routes[this.route].segments.reduce((a,[len])=>a+len,0)}
+  get routePosition(){return this.continuous?((this.x%this.length)+this.length)%this.length:Math.max(0,this.x)}
+  elevationAt(x){
+    const segments=routes[this.route].segments;
+    let height=0;
+    if(this.continuous){
+      height=Math.floor(x/this.length)*segments.reduce((sum,[length,grade])=>sum+length*grade,0);
+      x=((x%this.length)+this.length)%this.length;
+    }else if(x<0)return x*segments[0][1];
+    for(const [length,grade] of segments){const distance=Math.min(x,length);height+=distance*grade;x-=distance;if(x<=0)break}
+    return height;
+  }
   get grade(){
-    let p=Math.max(0,this.x);
+    let p=this.routePosition;
     for(const [len,g] of routes[this.route].segments){if(p<len)return g;p-=len}
     return 0;
   }
@@ -30,7 +42,7 @@ export class Car{
   shift(n){
     if(!Number.isInteger(n)||!(n in RATIOS)||n===this.gear)return;
     if(this.clutch<.9){
-      this.fault('clutch','Chưa đạp hết côn','Giữ A đến khi côn đạt 100%, rồi chọn số. Côn chưa ngắt nên mô phỏng chưa cho gài số.');return;
+      this.fault('clutch','Chưa đạp hết côn','Giữ Q đến khi côn đạt 100%, rồi chọn số. Côn chưa ngắt nên mô phỏng chưa cho gài số.');return;
     }
     if((n===-1&&Math.abs(this.v)>.3)||(n>0&&this.v<-.3)){
       this.fault('reverse','Dừng xe trước khi đổi hướng','Đạp phanh cho xe dừng hẳn rồi mới chọn số lùi hoặc đổi sang số tiến.');return;
@@ -43,7 +55,7 @@ export class Car{
   start(){
     if(this.running)return;
     if(this.clutch<.9&&this.gear!==0){
-      this.fault('start','Đạp côn để khởi động','Giữ A hoặc về N trước khi bấm khởi động.');return;
+      this.fault('start','Đạp côn để khởi động','Giữ Q để tăng côn đến 100% hoặc về N trước khi bấm khởi động.');return;
     }
     this.running=true;this.rpm=IDLE;this.stallTime=0;
   }
@@ -65,14 +77,14 @@ export class Car{
     if(this.v<-.65&&this.gear>=0)this.fault('rollback','Xe đang trôi lùi','Giữ phanh để dừng xe. Dùng phanh tay khi đề-pa dốc, chọn số 1 rồi phối hợp côn và ga trước khi nhả phanh tay.');
     if(this.running&&this.gear>1&&this.rpm<1100&&this.gas>.35&&this.clutch<.3)this.fault('lug','Động cơ đang bị ì','Số hiện tại quá cao với tốc độ và tải. Đạp côn, về số thấp phù hợp rồi phối hợp ga và côn.');
     if(this.grade*this.v<-.15&&Math.abs(this.v)>5&&(this.gear===0||this.clutch>.9))this.fault('coast','Đang thả trôi xuống dốc','Về N hoặc giữ côn làm mất phanh động cơ. Chọn số phù hợp, nhả côn và dùng phanh để kiểm soát tốc độ.');
-    if(this.x>=this.length){this.x=this.length;this.finished=true;this.v=0;}
+    if(!this.continuous&&this.x>=this.length){this.x=this.length;this.finished=true;this.v=0;}
   }
   integrate(dt,input){
     this.time+=dt;
     const target=pedal(input.clutch);
-    this.clutch=approach(this.clutch,target,target>this.clutch?3.5:.65,dt);
-    this.gas=approach(this.gas,pedal(input.gas),1.8,dt);
-    this.brake=approach(this.brake,pedal(input.brake),3,dt);
+    this.clutch=this.directPedals?target:approach(this.clutch,target,target>this.clutch?3.5:.65,dt);
+    this.gas=this.directPedals?pedal(input.gas):approach(this.gas,pedal(input.gas),1.8,dt);
+    this.brake=this.directPedals?pedal(input.brake):approach(this.brake,pedal(input.brake),3,dt);
     const ratio=RATIOS[this.gear]*FINAL_DRIVE;
     const coupling=ratio===0?0:clamp((.9-this.clutch)/.9,0,1);
     let omega=this.rpm/RPM_PER_RAD;

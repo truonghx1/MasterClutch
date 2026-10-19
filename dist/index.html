@@ -1,10 +1,100 @@
-<!doctype html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#263a35"><meta name="description" content="Luyện phối hợp côn, số, ga và phanh trong khoang lái. Chơi bằng bàn phím hoặc cảm ứng trên điện thoại."><title>CLUTCH — Tập lái số sàn</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="mobile.css"></head><body>
-<header><a class="brand" href="./"><span class="logo">Ⅲ</span> CLUTCH<span class="lab">DRIVING LAB</span></a><div class="header-right"><span class="live-dot"></span> MÔ PHỎNG TƯƠNG TÁC <button id="help">? <span>Hướng dẫn</span></button></div></header>
-<main><div class="heading"><div><div class="eyebrow">LÀM CHỦ TỪNG CHUYỂN ĐỘNG</div><h1>Cảm nhận côn. Làm chủ số.</h1><p>Một con đường thẳng. Bốn thao tác. Kỹ năng nằm ở sự phối hợp.</p></div><button id="reset" class="outline">↻ &nbsp; Tập lại</button></div>
-<div class="workspace"><aside><div class="section-label">01 / CHỌN BÀI TẬP</div><div id="lessons"><button class="lesson selected" data-route="basic"><span class="lesson-icon">↗</span><span><b>Làm quen côn số</b><small>Đường bằng · dốc nhẹ</small></span><em>01</em></button><button class="lesson" data-route="hill"><span class="lesson-icon">⌁</span><span><b>Khởi hành ngang dốc</b><small>Dốc lên · 8–12%</small></span><em>02</em></button><button class="lesson" data-route="descent"><span class="lesson-icon">↘</span><span><b>Kiểm soát xuống dốc</b><small>Dốc xuống · phanh động cơ</small></span><em>03</em></button></div>
-<div class="coach"><div class="section-label"><span class="live-dot"></span> HUẤN LUYỆN VIÊN</div><h3 id="coach-title">Bắt đầu thật nhẹ nhàng.</h3><p id="coach-text">Giữ A để đạp hết côn, nhấn 1 vào số. Giữ L thêm ga rồi nhả A từ từ để xe lăn bánh.</p><div class="tip">↳ &nbsp; Côn tự nhả từ từ khi bạn thả A.</div></div><div class="session"><div class="section-label">BUỔI TẬP CỦA BẠN</div><div><span>Thời gian</span><b id="time">00:00</b></div><div><span>Lỗi thao tác</span><b id="errors">0</b></div><div><span>Số lần tắt máy</span><b id="stalls">0</b></div></div><p class="note">Mô hình luyện phối hợp thao tác; cảm giác côn thực tế thay đổi theo từng xe.</p></aside>
-<section class="sim"><div class="scene"><canvas id="road" aria-label="Mô phỏng xe di chuyển trên đường có dốc"></canvas><div class="scene-top"><span class="scene-tag">● &nbsp; <span id="scene-name">LÀM QUEN CÔN SỐ</span></span><button id="pause">Ⅱ &nbsp; Tạm dừng</button></div><div class="slope"><span>ĐỘ DỐC</span><b id="grade">0<span>%</span></b><small id="grade-name">Đường bằng</small></div><div class="scene-bottom"><span id="distance">0 / 1.320 m</span><span id="direction">SẴN SÀNG KHỞI HÀNH</span></div><div class="progress"><i id="progress"></i></div><div id="overlay" hidden><h2 id="overlay-title"></h2><p id="overlay-text"></p><button id="resume">Tiếp tục</button></div></div>
-<div class="dashboard"><div class="gauge"><div class="section-label">VÒNG TUA ĐỘNG CƠ</div><div class="rpm-value"><strong id="rpm">850</strong><span>RPM</span></div><div class="rpm-track"><i id="rpm-bar"></i></div><div class="ticks"><span>0</span><span>2</span><span>4</span><span class="red">6</span><span class="red">8 ×1000</span></div></div><div class="speed"><strong id="speed">0</strong><span>km/h</span></div><div class="gear-display"><span>SỐ HIỆN TẠI</span><strong id="gear">N</strong><small id="engine">● Động cơ đang chạy</small></div></div>
-<div class="controls"><div class="pedal-area"><div class="section-label">02 / PHỐI HỢP BÀN ĐẠP <span>GIỮ PHÍM ĐỂ ĐẠP</span></div><div class="pedals"><button data-pedal="clutch" class="pedal clutch"><div><kbd>A</kbd><span>Côn</span><b id="clutch-percent">100%</b></div><div class="pedal-meter"><i></i></div><small>Ngắt truyền động</small></button><button data-pedal="brake" class="pedal brake"><div><kbd>J</kbd><span>Phanh</span><b id="brake-percent">0%</b></div><div class="pedal-meter"><i></i></div><small>Giảm tốc độ</small></button><button data-pedal="gas" class="pedal gas"><div><kbd>L</kbd><span>Ga</span><b id="gas-percent">0%</b></div><div class="pedal-meter"><i></i></div><small>Tăng vòng tua</small></button></div></div><div class="shift-area"><div class="section-label">03 / HỘP SỐ</div><div class="gears"><button data-gear="0" class="active">N<small>phím N</small></button><button data-gear="1">1</button><button data-gear="2">2</button><button data-gear="3">3</button><button data-gear="4">4</button><button data-gear="5">5</button><button data-gear="-1">R<small>phím 6</small></button></div><button id="start">⏻ &nbsp; Khởi động máy <kbd>Enter</kbd></button></div></div>
-<div class="feedback"><div class="section-label">NHẬT KÝ THAO TÁC <span id="log-count">0 SỰ KIỆN</span></div><div id="logs" aria-live="polite"><p class="empty">✓ &nbsp; Chưa có lỗi. Chậm rãi để cảm nhận điểm bắt côn.</p></div></div></section></div><footer><b>CLUTCH /</b> Luyện tập để mỗi thao tác trở thành phản xạ.<span>A · Côn &nbsp; J · Phanh &nbsp; L · Ga &nbsp; 1–5 · Số tiến &nbsp; 6 · Số lùi</span></footer></main>
-<dialog id="guide"><button id="close-help" aria-label="Đóng hướng dẫn">✕</button><div class="eyebrow">CẨM NANG NHANH</div><h2>Đi từng bước. Cảm nhận từng số.</h2><ol><li><b>Khởi hành:</b> giữ A, chọn 1. Thêm ga bằng L, thả A để côn nhả dần. Nhấp ga để giữ khoảng 1.500–2.500 RPM khi bắt côn.</li><li><b>Chuyển số:</b> nhả ga, giữ A đến 100%, chọn số mới, nhả A rồi thêm ga. Chọn số thấp khi xe chậm hoặc leo dốc.</li><li><b>Dừng xe:</b> nhả ga, giữ J. Đạp A trước khi vòng tua xuống quá thấp để tránh tắt máy.</li><li><b>Đề-pa dốc:</b> giữ J, bật phanh tay bằng H. Giữ A và chọn 1, nhả J rồi thêm ga và nhả A tới điểm bắt côn. Nhấn H nhả phanh tay khi đủ lực kéo. Nếu trôi lùi, giữ J và thử lại. Không giữ xe lâu trên dốc bằng côn trượt.</li><li><b>Xuống dốc:</b> dùng số thấp phù hợp để có phanh động cơ, phối hợp J. Tránh giữ côn hoặc về N khi đổ dốc.</li><li><b>Tắt máy:</b> giữ A + J, nhấn Enter khởi động lại. Số lùi dùng phím 6, số mo dùng N. Phím cách để tạm dừng.</li><li><b>Giữ điểm bắt côn:</b> khi đang nhả A, nhấn S hoặc nút Giữ mức côn để giữ nguyên vị trí. Nhấn lại để tiếp tục nhả; giữ A để đạp hết côn. Đây là hỗ trợ trong mô phỏng, không phải nút có trên xe thật.</li></ol><p>Các nút bàn đạp hỗ trợ chạm giữ. Mô phỏng tự nhả côn trong khoảng 1,5 giây để luyện với bàn phím.</p></dialog><script type="module" src="app.js"></script></body></html>
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#263a35">
+  <meta name="description" content="Tập lái số sàn trên PC. Điều chỉnh côn, phanh và ga từng chút bằng bàn phím, thả phím giữ nguyên mức.">
+  <title>CLUTCH — Tập lái số sàn trên PC</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mobile.css">
+  <link rel="stylesheet" href="desktop.css">
+</head>
+<body>
+<header>
+  <a class="brand" href="./"><span class="logo">Ⅲ</span> CLUTCH<span class="lab">DRIVING LAB</span></a>
+  <div class="header-right"><span class="live-dot"></span> LUYỆN LÁI TRÊN PC <button id="help">? <span>Hướng dẫn</span></button></div>
+</header>
+<main>
+  <div class="heading"><div><div class="eyebrow">CHẬM MỘT CHÚT. CHÍNH XÁC HƠN.</div><h1>Làm chủ từng mức bàn đạp.</h1><p>Nhấn nhẹ để chỉnh từng chút. Giữ phím để tăng / giảm đều. Thả phím giữ nguyên mức.</p></div><button id="reset" class="outline">↻ Tập lại</button></div>
+  <div class="workspace">
+    <aside>
+      <div class="section-label">01 / BÀI TẬP TỰ DO</div>
+      <div id="lessons">
+        <button class="lesson selected" data-route="basic"><span class="lesson-icon">↗</span><span><b>Làm quen côn số</b><small>Đường bằng · dốc nhẹ</small></span><em>01</em></button>
+        <button class="lesson" data-route="hill"><span class="lesson-icon">⌁</span><span><b>Khởi hành ngang dốc</b><small>Dốc lên · 8–12%</small></span><em>02</em></button>
+        <button class="lesson" data-route="descent"><span class="lesson-icon">↘</span><span><b>Kiểm soát xuống dốc</b><small>Dốc xuống · phanh động cơ</small></span><em>03</em></button>
+      </div>
+      <div class="coach"><div class="section-label"><span class="live-dot"></span> GỢI Ý THAO TÁC</div><h3 id="coach-title">Khởi hành từng bước.</h3><p id="coach-text"></p><div class="tip">Mỗi nhấn: 2% · Giữ phím: 20%/giây.<br>Thả phím là giữ mức, không tự nhả.</div></div>
+      <div class="session"><div class="section-label">BUỔI TẬP</div><div><span>Thời gian</span><b id="time">00:00</b></div><div><span>Lỗi thao tác</span><b id="errors">0</b></div><div><span>Số lần tắt máy</span><b id="stalls">0</b></div></div>
+      <p class="note">Đường lặp lại liên tục. Chọn bài khác khi bạn muốn đổi.</p>
+    </aside>
+    <section class="sim" aria-label="Khoang lái và điều khiển">
+      <div class="scene">
+        <canvas id="road" aria-label="Khoang lái và đường phía trước"></canvas>
+        <div class="scene-top"><span class="scene-tag">● <span id="scene-name">LÀM QUEN CÔN SỐ</span></span><button id="view">Góc nhìn: Khoang lái</button><button id="pause">Ⅱ Tạm dừng</button></div>
+        <div class="slope"><span>ĐỘ DỐC</span><b id="grade">0%</b><small id="grade-name">Đường bằng</small></div>
+        <div class="scene-bottom"><span id="distance">0 m · Tập không giới hạn</span><span id="direction">SẴN SÀNG KHỞI HÀNH</span></div>
+        <div class="progress"><i id="progress"></i></div>
+        <div id="overlay" hidden><h2 id="overlay-title"></h2><p id="overlay-text"></p><button id="resume">Tiếp tục</button></div>
+      </div>
+      <div class="dashboard">
+        <div class="gauge"><div class="section-label">VÒNG TUA ĐỘNG CƠ</div><div class="rpm-value"><strong id="rpm">850</strong><span>RPM</span></div><div class="rpm-track"><i id="rpm-bar"></i></div><div class="ticks"><span>0</span><span>2</span><span>4</span><span class="red">6</span><span class="red">8 ×1000</span></div></div>
+        <div class="speed"><strong id="speed">0</strong><span>km/h</span></div>
+        <div class="gear-display"><span>SỐ HIỆN TẠI</span><strong id="gear">N</strong><small id="engine">● Động cơ đang chạy</small></div>
+      </div>
+      <div class="controls">
+        <div class="pedal-area"><div class="section-label">02 / BÀN ĐẠP <span>THẢ PHÍM GIỮ MỨC</span></div>
+          <div class="pedals">
+            <div data-pedal="clutch" class="pedal clutch">
+              <div class="pedal-title"><span>Côn</span><b id="clutch-percent">100%</b></div>
+              <button data-adjust="KeyQ" aria-label="Tăng côn, phím Q"><kbd>Q</kbd> + Tăng</button>
+              <div class="pedal-meter"><i></i></div>
+              <input data-level="clutch" type="range" min="0" max="100" step="1" value="100" aria-label="Mức côn">
+              <button data-adjust="KeyA" aria-label="Giảm côn, phím A"><kbd>A</kbd> − Giảm</button>
+              <small>100%: ngắt côn</small>
+            </div>
+            <div data-pedal="brake" class="pedal brake">
+              <div class="pedal-title"><span>Phanh</span><b id="brake-percent">0%</b></div>
+              <button data-adjust="KeyI" aria-label="Tăng phanh, phím I"><kbd>I</kbd> + Tăng</button>
+              <div class="pedal-meter"><i></i></div>
+              <input data-level="brake" type="range" min="0" max="100" step="1" value="0" aria-label="Mức phanh">
+              <button data-adjust="KeyK" aria-label="Giảm phanh, phím K"><kbd>K</kbd> − Giảm</button>
+              <small>0%: nhả phanh</small>
+            </div>
+            <div data-pedal="gas" class="pedal gas">
+              <div class="pedal-title"><span>Ga</span><b id="gas-percent">0%</b></div>
+              <button data-adjust="KeyO" aria-label="Tăng ga, phím O"><kbd>O</kbd> + Tăng</button>
+              <div class="pedal-meter"><i></i></div>
+              <input data-level="gas" type="range" min="0" max="100" step="1" value="0" aria-label="Mức ga">
+              <button data-adjust="KeyL" aria-label="Giảm ga, phím L"><kbd>L</kbd> − Giảm</button>
+              <small>0%: nhả ga</small>
+            </div>
+          </div>
+        </div>
+        <div class="shift-area"><div class="section-label">03 / HỘP SỐ <span>CÔN 100% TRƯỚC KHI CHỌN</span></div>
+          <div class="gears"><button data-gear="0" class="active">N<small>phím N</small></button><button data-gear="1">1</button><button data-gear="2">2</button><button data-gear="3">3</button><button data-gear="4">4</button><button data-gear="5">5</button><button data-gear="-1">R<small>phím 6</small></button></div>
+        </div>
+        <div class="training-controls"><button id="handbrake" aria-pressed="true">Phanh tay · ĐANG GIỮ · H</button><button id="start" disabled>● Máy đang chạy</button></div>
+        <p class="control-note">Có thể giữ nhiều phím cùng lúc hoặc dùng chuột chỉnh mức.</p>
+      </div>
+      <div class="feedback"><div class="section-label">NHẬT KÝ THAO TÁC <span id="log-count">0 SỰ KIỆN</span></div><div id="logs" aria-live="polite"></div></div>
+    </section>
+  </div>
+  <footer><b>CLUTCH /</b> Tập không giới hạn.<span>Q / A · Côn &nbsp; I / K · Phanh &nbsp; O / L · Ga &nbsp; 1–5 · Số tiến &nbsp; 6 · Số lùi &nbsp; Space · Tạm dừng</span></footer>
+</main>
+<dialog id="guide">
+  <button id="close-help" aria-label="Đóng hướng dẫn">✕</button><div class="eyebrow">CẨM NANG NHANH</div><h2>Chỉnh từng chút. Thả phím giữ mức.</h2>
+  <ol>
+    <li><b>Côn:</b> Q tăng, A giảm. <b>Phanh:</b> I tăng, K giảm. <b>Ga:</b> O tăng, L giảm. Mỗi nhấn chỉnh 2%; giữ phím sau 0,25 giây sẽ chỉnh đều 20% mỗi giây. Thả phím để giữ nguyên mức.</li>
+    <li><b>Khởi hành:</b> côn 100%, chọn số 1. O thêm ga vừa đủ, A giảm côn từ từ đến điểm bắt, H nhả phanh tay. Thả A khi muốn giữ côn ở điểm bắt.</li>
+    <li><b>Chuyển số:</b> L giảm ga, Q tăng côn đến 100%, chọn số mới bằng 1–5. A giảm côn từ từ rồi O thêm ga. N là số mo, 6 là số lùi.</li>
+    <li><b>Dừng xe:</b> L giảm ga về 0%, I tăng phanh và Q tăng côn trước khi vòng tua tụt thấp. K để giảm phanh.</li>
+    <li><b>Đề-pa dốc:</b> dùng H giữ phanh tay, chọn số 1, phối hợp O thêm ga và A giảm côn. Nhấn H nhả phanh tay khi đủ lực kéo. Nếu trôi, I tăng phanh và thử lại.</li>
+    <li><b>Tắt máy:</b> Q đưa côn lên 100%, I tăng phanh, L giảm ga về 0%. Nhấn Enter hoặc nút Bật động cơ để khởi động lại tại chỗ.</li>
+    <li><b>Tạm dừng:</b> Space giữ nguyên xe và mức bàn đạp. Chuyển cửa sổ cũng tạm dừng. Đường lặp lại trong cùng bài; chọn bài khác ở bên trái khi muốn đổi.</li>
+  </ol><p>Mô hình dùng để luyện phối hợp thao tác; cảm giác côn thực tế thay đổi theo từng xe.</p>
+</dialog>
+<script type="module" src="app.js"></script>
+</body>
+</html>

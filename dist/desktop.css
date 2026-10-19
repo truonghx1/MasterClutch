@@ -1,0 +1,52 @@
+/* PC workspace: keep the road, gauges and all driving controls in view together. */
+:root{font-family:'Be Vietnam Pro','Segoe UI',sans-serif}
+input:focus-visible{outline:3px solid #78a94e;outline-offset:3px}
+button:disabled{opacity:.55;cursor:default}
+.controls{display:flex;flex-direction:column;gap:14px}
+.pedals{gap:10px;margin-top:12px}
+.pedal{display:flex;flex-direction:column;gap:6px;min-width:0;padding:10px 8px}
+.pedal .pedal-title{display:flex;justify-content:space-between;gap:3px;font-size:13px;align-items:center}
+.pedal b{margin:0;font-size:22px;color:#294832;font-weight:600;font-variant-numeric:tabular-nums}
+.pedal button{width:100%;min-height:34px;border:1px solid #cbd6bd;border-radius:6px;background:#fff;font-size:11px;white-space:nowrap;touch-action:none}
+.pedal button.active{background:#335c45;color:white;border-color:#335c45}
+.pedal button.active kbd{background:#e2edcf;color:#294832}
+.pedal kbd{display:inline-block;min-width:23px;padding:2px 4px;margin-right:3px;font-size:11px}
+.pedal-meter{height:32px;margin:0;transition:none}
+.pedal-meter i{transition:none}
+.pedal input{width:100%;min-width:0;margin:0;height:14px;accent-color:#567444;touch-action:none}
+.pedal small{font-size:10px;text-align:center;color:#53614c}
+.brake input{accent-color:#b77a59}.gas input{accent-color:#839e43}
+.training-controls{order:initial;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.training-controls button{min-height:40px;font-size:12px}
+.training-controls #start{margin:0;padding:9px;font-size:12px}
+#start:enabled{background:#335c45;color:#fff;border-color:#335c45;font-weight:600}
+.control-note{margin:0;text-align:center;font-size:10px;color:#64725c;line-height:1.5}
+.gear-display small{font-size:10px}.gear-display small.stalled{color:#b1482d;font-weight:700}
+.gears{margin-top:10px}.gears button{min-width:0;font-size:18px}.gears small{font-size:8px}
+.section-label{letter-spacing:.8px;font-size:10px}.section-label>span:last-child:not(.live-dot){font-size:9px}
+dialog{max-height:85vh;overflow:auto}
+@media(min-width:1101px){
+  header{height:62px;padding:0 28px}.brand{font-size:23px}
+  main{max-width:1800px;padding:20px 28px 0}
+  .heading{margin-bottom:20px}.heading h1{font-size:27px;margin:7px 0}.heading p{font-size:12px}
+  .workspace{grid-template-columns:220px minmax(0,1fr);gap:20px;align-items:start}
+  .sim{display:grid;grid-template-columns:minmax(0,1fr) 380px;grid-template-rows:minmax(330px,1fr) auto auto;gap:14px;align-items:stretch}
+  .scene{grid-column:1;grid-row:1;height:100%;min-height:330px}
+  .dashboard{grid-column:1;grid-row:2;margin:0;padding:18px;gap:14px}
+  .controls{grid-column:2;grid-row:1 / span 2;padding:16px}
+  .feedback{grid-column:1 / -1;grid-row:3;margin:0;padding:15px 18px}
+  #logs{max-height:120px}.empty,.log{font-size:12px}.log p{font-size:11px}
+  .scene-top{top:12px;left:12px;right:12px;flex-wrap:wrap;justify-content:flex-end;gap:7px}
+  .scene-tag{width:100%;font-size:10px;background:#f5f8e9e6;padding:6px 10px;color:#294832}
+  .scene-top button{font-size:11px;padding:8px 10px;min-height:36px}
+  .slope{top:93px;right:12px;padding:8px}.slope b{font-size:26px}
+  .scene-bottom{font-size:9px;letter-spacing:0;left:12px;right:12px;gap:8px}
+  #lessons{margin:12px 0 18px;gap:8px}.lesson{padding:13px 10px;gap:8px}.lesson-icon{width:22px}
+  .lesson b{font-size:12px}.lesson small{font-size:10px}.lesson em{display:none}
+  .coach{padding:16px 14px}.coach h3{font-size:15px;margin:14px 0 8px}.coach p{font-size:12px;color:#526349}
+  .tip{font-size:11px;margin-top:14px;padding-top:12px}.session{padding:18px 2px 8px}.session>div:not(:first-child){font-size:12px;margin-top:12px}
+  .note{font-size:11px;color:#6c7961;margin:10px 0 0}footer{margin-top:20px;padding:16px 0;font-size:10px}footer span{font-size:10px}
+}
+@media(min-width:1600px){.workspace{grid-template-columns:250px minmax(0,1fr);gap:24px}.sim{grid-template-columns:minmax(0,1fr) 420px}.scene{min-height:420px}.pedal-meter{height:72px}.controls{padding:22px;gap:20px}.pedal button{min-height:44px}.lesson b{font-size:13px}}
+@media(min-width:761px) and (max-width:1100px){main{padding:20px}.workspace{grid-template-columns:200px minmax(0,1fr);gap:16px}.heading{margin-bottom:20px}.scene{height:320px}.controls{padding:16px}.pedals{max-width:none}.pedal{flex:1}.training-controls{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.pedal{padding:10px 6px;gap:7px}.pedal .pedal-title{font-size:13px}.pedal b{font-size:22px}.pedal kbd{display:inline-block}.pedal button{font-size:10px}.pedal small{font-size:9px}.controls .pedal-area{order:0}.controls .shift-area{order:1}.training-controls{order:2}.control-note{order:3}.scene-tag{display:none}.scene-top button{font-size:10px}.scene-top{justify-content:flex-end}}

@@ -13,14 +13,7 @@ export function drawCockpit(ctx, w, h, car, routes) {
     ctx.strokeStyle=color; ctx.lineWidth=width; ctx.lineCap='round';ctx.beginPath();
     points.forEach(([x,y], i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.stroke();
   };
-  const elevation = x => {
-    if(x<0)return x*routes[car.route].segments[0][1];
-    let result=0;
-    for(const [length, grade] of routes[car.route].segments){
-      const distance=Math.min(x,length);result+=distance*grade;x-=distance;if(x<=0)break;
-    }
-    return result;
-  };
+  const elevation = x => car.elevationAt(x);
   const sky=ctx.createLinearGradient(0,0,0,h*.75);
   sky.addColorStop(0,'#a9c8ce');sky.addColorStop(1,'#edf0d8');
   ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
