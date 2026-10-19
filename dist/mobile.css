@@ -1,0 +1,53 @@
+/* Touch controls remain in normal document flow; they never cover the road or feedback. */
+button{touch-action:manipulation}
+.controls{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.pedal{min-height:112px}
+.pedal:active{transform:translateY(1px)}
+.gears button,#start,#pause,#view,#resume,#help,#reset{min-height:44px}
+.gears button{min-width:36px}
+.scene{height:390px}
+.scene-top{gap:8px}
+.scene-tag{margin-right:auto}
+.scene-bottom{pointer-events:none;text-shadow:0 1px 3px #14251e}
+.slope{background:#f5f8e9db;border-radius:8px;padding:10px;top:83px;right:20px}
+.mobile-hint{display:none}
+.pedal.held kbd{background:#dcecbf}
+@media(max-width:760px){
+  header{height:54px;padding-left:max(4%,env(safe-area-inset-left));padding-right:max(4%,env(safe-area-inset-right))}
+  main{padding:16px max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}
+  .heading{margin-bottom:14px}.heading h1{font-size:21px;margin:7px 0}.heading p{display:none}
+  .workspace{gap:12px}.lesson{min-height:56px}.lesson b{font-size:10px}.lesson small{font-size:8px}
+  .scene{height:clamp(205px,32svh,300px)}
+  .scene-top{top:8px;left:8px;right:8px;gap:6px}.scene-top .scene-tag{display:none}
+  .scene-top #view{margin-right:auto}.scene-top button{font-size:10px;padding:8px 10px;background:#f7faeeec}
+  .slope{top:60px;right:10px;padding:7px}.slope b{font-size:23px}.slope>span{font-size:8px}.slope small{font-size:9px}
+  .scene-bottom{font-size:8px;bottom:12px;left:12px;right:12px;letter-spacing:0}
+  .dashboard{padding:10px 12px;gap:10px;margin:8px 0}.rpm-value{margin:5px 0}.rpm-value strong{font-size:24px}
+  .speed strong{font-size:36px}.gear-display strong{font-size:31px;line-height:1.3}.ticks{margin-top:4px}
+  .dashboard .section-label{font-size:7px;letter-spacing:.5px}.gear-display small{font-size:8px}
+  .mobile-hint{display:block;font-size:10px;line-height:1.6;margin:8px 2px;color:#6c7f61}
+  .controls{padding:12px;gap:12px;display:flex;flex-direction:column}
+  .shift-area{order:0}.pedal-area{order:1}.shift-area>.section-label{display:none}
+  .gears{margin-top:0;gap:5px}.gears button{height:46px;font-size:18px;min-width:0}.gears small{font-size:8px}
+  #start{margin-top:8px;font-size:11px;min-height:44px;padding:8px}
+  .pedals{margin-top:9px;gap:8px}.pedal{min-height:112px;padding:10px 8px}.pedal>div:first-child{gap:5px;font-size:14px}
+  .pedal b{font-size:10px}.pedal kbd{font-size:10px;padding:3px 5px}.pedal small{font-size:9px}
+  .pedal-meter{height:36px;margin:9px 0}.controls .section-label{font-size:8px;letter-spacing:.5px}
+  .feedback{margin-top:10px;padding:13px}.log{font-size:12px}.log p{font-size:11px}
+  .coach h3{font-size:16px}.coach p{font-size:12px}.tip{font-size:11px}
+  dialog{max-height:85svh;overflow:auto;padding:22px}dialog li{font-size:13px}#close-help{min-height:44px;min-width:44px}
+}
+@media(max-width:360px){.pedal kbd{display:none}.gears{gap:4px}.scene-bottom{font-size:7px}.heading .eyebrow{font-size:8px}.heading h1{font-size:19px}}
+@media(max-height:600px) and (orientation:landscape) and (max-width:1100px){
+  header{height:48px}.heading{margin:10px 0}.heading .eyebrow,.heading p{display:none}.heading h1{font-size:20px;margin:0}
+  main{padding-top:8px}.workspace{display:flex;flex-direction:column;gap:10px}.workspace aside{display:contents}
+  aside>.section-label{display:none}#lessons{display:flex;gap:8px;order:0;margin:0}.lesson{flex:1;padding:8px;min-height:44px}.lesson-icon,.lesson em,.lesson small{display:none}
+  .sim{order:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.9fr);gap:8px;align-items:start}
+  .scene{grid-column:1;grid-row:1;height:220px}.dashboard{grid-column:1;grid-row:2;margin:0;padding:8px 12px}
+  .controls{grid-column:2;grid-row:1 / span 2;padding:12px;display:flex;flex-direction:column;gap:12px}
+  .shift-area{order:0}.pedal-area{order:1}.shift-area>.section-label{display:none}.gears{margin-top:0}
+  .pedals{margin-top:10px}.pedal{min-height:108px}.pedal-meter{height:36px}.mobile-hint{display:none}
+  .feedback{grid-column:1 / -1;margin-top:0}.coach{order:2}.session{order:3}.note{order:4}
+  .scene-tag{display:none}.scene-top{top:8px;left:8px;right:8px}.scene-top #view{margin-right:auto}
+  .slope{top:65px;right:12px;padding:6px}.slope b{font-size:22px}
+}

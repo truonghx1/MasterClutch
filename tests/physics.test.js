@@ -1,0 +1,10 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {Car} from '../dist/physics.js';
+const run=(c,seconds,input={})=>{for(let i=0;i<seconds*60;i++)c.step(1/60,input)};
+test('Cannot shift without disengaging clutch',()=>{let c=new Car();c.clutch=0;c.shift(1);assert.equal(c.gear,0);assert.equal(c.errors[0].code,'clutch')});
+test('Launch in first with throttle',()=>{let c=new Car();c.shift(1);run(c,1,{clutch:true,gas:true});run(c,5,{gas:true});assert.ok(c.v>2);assert.equal(c.running,true)});
+test('Releasing clutch with no throttle stalls',()=>{let c=new Car();c.shift(1);run(c,5);assert.equal(c.running,false);assert.equal(c.stalls,1)});
+test('Braking without clutch stalls, clutch prevents stall',()=>{let c=new Car();c.shift(1);run(c,1,{clutch:true,gas:true});run(c,5,{gas:true});run(c,8,{brake:true});assert.equal(c.running,false);c=new Car();c.shift(1);run(c,1,{clutch:true,gas:true});run(c,5,{gas:true});run(c,8,{clutch:true,brake:true});assert.equal(c.v,0);assert.equal(c.running,true)});
+test('Hill rolls back unless brakes held',()=>{let c=new Car('hill');run(c,3,{clutch:true});assert.ok(c.v<0);assert.ok(c.errors.some(e=>e.code==='rollback'));c=new Car('hill');run(c,3,{clutch:true,brake:true});assert.equal(c.v,0)});
+test('Reverse cannot be selected moving forward',()=>{let c=new Car();c.v=4;c.shift(-1);assert.equal(c.gear,0);assert.equal(c.errors[0].code,'reverse')});
+test('Overrev downshift refused and restart requires clutch or neutral',()=>{let c=new Car();c.v=20;c.shift(1);assert.equal(c.gear,0);c.gear=1;c.clutch=0;c.running=false;c.start();assert.equal(c.running,false);c.clutch=1;c.start();assert.equal(c.running,true)});
+test('Engine braking reduces downhill acceleration',()=>{let a=new Car('descent'),b=new Car('descent');for(let c of [a,b]){c.v=10;c.clutch=0}b.gear=2;run(a,3);run(b,3);assert.ok(b.v<a.v)});
