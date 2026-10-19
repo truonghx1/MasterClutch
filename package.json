@@ -1,1 +1,1 @@
-{"name":"clutch-lab","private":true,"type":"module","scripts":{"test":"node --test tests/*.test.js","start":"node server.js"}}
+{"name":"clutch-lab","private":true,"type":"module","scripts":{"test":"node --test tests/*.test.js","start":"node server.js","test:e2e":"playwright test","start:lan":"node server.js --lan"},"devDependencies":{"@playwright/test":"^1.64.1"}}

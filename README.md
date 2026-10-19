@@ -1,6 +1,44 @@
 # CLUTCH — Tập lái số sàn
 
-## Khoang lái và điện thoại
+## Bản điện thoại chơi ngang — branch `feature/mobile-landscape`
+
+Trang `/` trên branch này là bản mobile: xoay ngang điện thoại rồi chạm **Bắt đầu lái**. Trang `/desktop.html` giữ giao diện desktop trước đó. Mô hình xe và các bài tập dùng chung.
+
+- Toàn bộ điều khiển nằm trong một màn hình ngang: côn bên trái, số ở giữa, phanh/ga bên phải; không cần cuộn khi chơi.
+- Chạm giữ côn và dùng ngón khác chọn số. Ga mặc định nhẹ 40%; kéo ngón lên để tăng, xuống để giảm, nhấc tay để nhả.
+- Xe bắt đầu với phanh tay đang giữ. Khởi hành bằng số 1, thêm ga, nhả côn tới điểm bắt rồi chạm nhả phanh tay.
+- Nút **Giữ mức côn** giữ điểm bắt khi cần; chạm lại để nhả tiếp. Nút **Chi tiết** tạm dừng và mở giải thích lỗi/nhật ký.
+- Xoay về dọc, chuyển ứng dụng hoặc mất tiêu điểm sẽ tạm dừng và hủy trạng thái chạm để tránh kẹt bàn đạp. Chạm **Tiếp tục** khi quay lại.
+- Nút toàn màn hình là tùy chọn. Nếu trình duyệt không hỗ trợ, bật tự động xoay và cầm ngang để chơi trong trình duyệt bình thường.
+
+### Thử bằng điện thoại trong cùng Wi-Fi
+
+```sh
+npm run start:lan
+```
+
+Mở `http://<IP-LAN-của-máy-tính>:5173` trên điện thoại; ví dụ `http://192.168.1.10:5173`. Dùng `ipconfig` trên Windows để xem IPv4 của Wi-Fi. Nếu Windows hỏi quyền mạng cho Node.js, cho phép trên mạng riêng đang dùng. `localhost` trên điện thoại là chính điện thoại, không phải máy tính.
+
+### Push và deploy branch mobile
+
+```sh
+git push -u origin feature/mobile-landscape
+```
+
+Nếu Vercel đã nối repository, mở Preview Deployment của branch này để thử. Để dùng bản mobile làm website chính, chọn branch này làm Production Branch trong cấu hình Git của Vercel hoặc merge khi bạn muốn. Cấu hình output vẫn là `dist`, không cần build.
+
+### Kiểm thử bản mobile
+
+```sh
+npm ci
+npx playwright install webkit
+npm test
+npm run test:e2e
+```
+
+Trên Windows, kiểm thử Chromium dùng Microsoft Edge đã cài. Trên Linux/macOS chạy thêm `npx playwright install chromium`. Kiểm thử gồm kích thước màn hình ngang, khởi hành bằng đa chạm, nhả/hủy chạm, kéo ga, xoay máy và tạm dừng. WebKit kiểm tra giao diện và thao tác chạm đơn; kiểm thử đa chạm gốc dùng Chromium CDP. Giả lập trình duyệt không thay thế kiểm tra trên thiết bị iOS/Android thật.
+
+## Bản desktop (`/desktop.html`)
 
 Mặc định là góc nhìn người ngồi trong khoang xe, có hai tay trên vô-lăng, gương, cần số và đồng hồ chạy theo trạng thái xe. Nút **Góc nhìn** chuyển về hình xe nhìn từ bên ngoài. Không cần đánh lái.
 
