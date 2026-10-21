@@ -17,7 +17,7 @@ export class Car{
     this.route=routes[route]?route:'basic';this.x=0;this.v=0;this.rpm=IDLE;this.gear=0;
     this.clutch=1;this.gas=0;this.brake=0;this.handbrake=false;
     this.running=true;this.stallTime=0;this.time=0;this.errors=[];this.cooldown={};
-    this.finished=false;this.stalls=0;this.maxSpeed=0;
+    this.finished=false;this.stalls=0;this.maxSpeed=0;this.clutchTorque=0;
   }
   get length(){return routes[this.route].segments.reduce((a,[len])=>a+len,0)}
   get routePosition(){return this.continuous?((this.x%this.length)+this.length)%this.length:Math.max(0,this.x)}
@@ -89,11 +89,13 @@ export class Car{
     omega=Math.max(0,omega+(combustion-friction)*dt/INERTIA);
     this.v+=(-9.81*Math.sin(Math.atan(this.grade))-.0005*this.v*Math.abs(this.v))*dt;
     // Equal/opposite impulse transfers torque. Signed ratio handles wrong-way rolling.
+    this.clutchTorque=0;
     if(coupling>0){
       const slip=omega-this.v*ratio/RADIUS;
       const inverseInertia=1/INERTIA+ratio*ratio/(MASS*RADIUS*RADIUS);
       const capacity=280*coupling*coupling*dt;
       const impulse=clamp(slip/inverseInertia,-capacity,capacity);
+      this.clutchTorque=impulse/dt;
       omega-=impulse/INERTIA;this.v+=impulse*ratio/(MASS*RADIUS);
     }
     const braking=(this.brake*9+(this.handbrake?7:0)+.12)*dt;

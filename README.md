@@ -1,5 +1,15 @@
 # CLUTCH — Tập lái số sàn
 
+## Âm thanh động cơ
+
+Cả bản điện thoại và desktop có tiếng động cơ tổng hợp trực tiếp bằng Web Audio, không cần tải tệp âm thanh. Tiếng máy bắt đầu sau khi chạm **Bắt đầu lái** hoặc thao tác lái trên desktop. Nút **🔊 / 🔇** bật/tắt tiếng; tạm dừng, mở hướng dẫn, chuyển ứng dụng hoặc xoay dọc trên bản mobile sẽ ngắt âm thanh.
+
+- Cao độ bám theo vòng tua thật của mô phỏng: đạp ga khi ngắt côn vẫn nghe máy vút lên dù xe đứng yên.
+- Lực truyền qua côn làm đổi độ nặng và âm sắc. Khi nhả côn bắt tải, vòng tua tụt; thay số và nhả côn làm tiếng máy đổi theo tốc độ động cơ mới.
+- Máy hụt tua dưới tải có tiếng rung; gần giới hạn tua có tiếng ngắt nhịp. Nhả ga khi đang gài số có tiếng ghì máy. Tắt máy làm mất tiếng nổ, khởi động lại có tiếng máy trở lại.
+
+Đây là âm thanh tổng hợp của một động cơ 4 xi-lanh giả định, không phải bản thu của một mẫu xe cụ thể. Khi trình duyệt không hỗ trợ âm thanh, mô phỏng vẫn hoạt động. Kiểm thử âm thanh nằm trong `tests/audio.test.js` và `e2e/audio.spec.js`, bao gồm đo tín hiệu đầu ra Web Audio và vòng đời bật/tắt tiếng. Kiểm thử tín hiệu tự bỏ qua nếu bản trình duyệt không có Web Audio (như Playwright WebKit trên Windows); cần nghe thử trên điện thoại thật để đánh giá âm sắc và độ trễ.
+
 ## Bản điện thoại chơi ngang — branch `feature/mobile-landscape`
 
 Trang `/` trên branch này là bản mobile: xoay ngang điện thoại rồi chạm **Bắt đầu lái**. Trang `/desktop.html` giữ giao diện desktop trước đó. Mô hình xe và các bài tập dùng chung.

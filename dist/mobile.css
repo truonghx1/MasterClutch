@@ -1,5 +1,6 @@
 /* Touch controls remain in normal document flow; they never cover the road or feedback. */
 button{touch-action:manipulation}
+#sound{min-width:44px;min-height:44px;font-size:18px;border:1px solid #cbd6bd;border-radius:8px;background:#f4f7ed}
 .controls{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .pedal{min-height:112px}
 .pedal:active{transform:translateY(1px)}

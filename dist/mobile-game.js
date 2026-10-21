@@ -1,5 +1,6 @@
 import {Car,routes} from './physics.js';
 import {drawCockpit} from './cockpit.js';
+import {attachEngineAudio} from './engine-audio.js';
 
 const $=id=>document.getElementById(id);
 const canvas=$('road'),ctx=canvas.getContext('2d');
@@ -33,7 +34,7 @@ function normalFeedback(){
 }
 function pause(){
   if(mode!=='playing')return;
-  mode='paused';clearInput();$('paused').hidden=false;
+  mode='paused';sound.setActive(false);clearInput();$('paused').hidden=false;
   $('pause-title').textContent='Đã tạm dừng';$('pause-detail').textContent='Xe được giữ nguyên. Chạm Tiếp tục khi bạn sẵn sàng.';
   $('resume').textContent='Tiếp tục';$('pause').textContent='▶';render();
 }
@@ -42,6 +43,7 @@ function resume(){
   clearInput();mode='playing';lastFrame=0;$('paused').hidden=true;$('welcome').hidden=true;$('pause').textContent='Ⅱ';render();
 }
 function reset(){
+  sound.setActive(false);
   car=new Car($('route').value,{continuous:true,directPedals:true});car.handbrake=true;seenErrors=0;noticeUntil=0;
   Object.assign(levels,{clutch:1,brake:0,gas:0});
   clearInput();$('logs').textContent='Chưa có lỗi.';$('paused').hidden=true;
@@ -174,6 +176,7 @@ function frame(now){
   if(playable()){
     car.step(dt,input);
   }
+  sound.update(car,playable()&&!document.hidden);
   // Render at most 30 times per second, with capped canvas resolution for mobile GPUs.
   if(now-lastPaint>=1000/30){
     lastPaint=now;render();
@@ -185,4 +188,6 @@ function frame(now){
   }
   requestAnimationFrame(frame);
 }
+// Register audio after the driving handlers so the first gesture sees the new mode.
+const sound=attachEngineAudio($('sound'),()=>playable());
 orientationChanged();render();requestAnimationFrame(frame);

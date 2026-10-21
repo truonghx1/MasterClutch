@@ -1,5 +1,6 @@
 import {Car,routes} from './physics.js';
 import {drawCockpit} from './cockpit.js';
+import {attachEngineAudio} from './engine-audio.js';
 const $=id=>document.getElementById(id);let car=new Car(),paused=false,started=false,last=0,seen=0;const keys=new Set(),pointers=new Map();const input={clutch:false,brake:false,gas:false};
 let heldClutch=null;
 function syncInput(){
@@ -70,6 +71,7 @@ function updateTrainingControls(){
 function frame(t){
   const dt=last?Math.min((t-last)/1000,.05):0;last=t;
   if(started&&!paused&&!$('guide').open){car.step(dt,input);render()}
+  sound.update(car,started&&!paused&&!car.finished&&!$('guide').open&&!document.hidden);
   updateTrainingControls();
   if(cockpitView){
     const w=canvas.clientWidth,h=canvas.clientHeight,dpr=Math.min(devicePixelRatio||1,2);
@@ -78,4 +80,5 @@ function frame(t){
   }else draw();
   requestAnimationFrame(frame);
 }
+const sound=attachEngineAudio($('sound'),()=>started&&!paused&&!car.finished&&!$('guide').open);
 reset();requestAnimationFrame(frame);

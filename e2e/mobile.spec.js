@@ -24,7 +24,7 @@ test('Mobile page boots without runtime or resource errors',async({page,browserN
 for(const [width,height] of [[667,280],[667,375],[740,320],[844,390],[932,430],[1024,768]]){
   test(`Controls fit a ${width}x${height} landscape screen without scrolling`,async({page})=>{
     await page.setViewportSize({width,height});await play(page);
-    const selectors=['[data-pedal="clutch"]','[data-pedal="brake"]','[data-pedal="gas"]','#handbrake','#start','[data-gear="1"]','[data-gear="5"]','#pause'];
+    const selectors=['[data-pedal="clutch"]','[data-pedal="brake"]','[data-pedal="gas"]','#handbrake','#start','[data-gear="1"]','[data-gear="5"]','#sound','#pause'];
     for(const selector of selectors){
       const box=await page.locator(selector).boundingBox();
       expect(box.x,selector).toBeGreaterThanOrEqual(0);expect(box.y,selector).toBeGreaterThanOrEqual(0);
