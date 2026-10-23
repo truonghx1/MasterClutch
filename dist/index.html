@@ -13,7 +13,7 @@
   <canvas id="road" aria-label="Đường phía trước nhìn từ khoang lái"></canvas>
   <header class="toolbar">
     <b>CLUTCH <span>MOBILE DRIVE</span></b>
-    <label class="route-label"><span class="sr-only">Bài tập</span><select id="route"><option value="basic">01 · Làm quen côn số</option><option value="hill">02 · Đề-pa lên dốc</option><option value="descent">03 · Xuống dốc</option></select></label>
+    <label class="route-label"><span class="sr-only">Bài tập</span><select id="route"><option value="bridge">04 · Dốc cầu</option><option value="acceleration">05 · Tăng tốc đường thẳng</option><option value="basic" selected>01 · Làm quen côn số</option><option value="hill">02 · Đề-pa lên dốc</option><option value="descent">03 · Xuống dốc</option></select></label>
     <button id="restart" aria-label="Tập lại">↻</button>
     <button id="sound" aria-label="Tắt âm thanh động cơ" aria-pressed="true">🔊</button>
     <button id="fullscreen" aria-label="Bật toàn màn hình">⛶</button>
@@ -45,11 +45,14 @@
     </div>
   </section>
   <section id="welcome" class="curtain">
-    <div class="card"><div class="eyebrow">CLUTCH / MOBILE DRIVE</div><h1>Cầm ngang máy.<br>Làm chủ côn số.</h1><p>Côn bên trái. Phanh và ga bên phải.<br>Vuốt lên để tăng, xuống để giảm; thả tay giữ nguyên mức.<br>Tập không giới hạn. Chọn bài khác ở thanh trên khi muốn đổi.</p><button id="play" class="primary">Bắt đầu lái →</button><small>Không cần cài ứng dụng · Không cần đánh lái</small><a href="desktop.html">Mở bản desktop</a></div>
+    <div class="card"><div class="eyebrow">CLUTCH / MOBILE DRIVE</div><h1 id="welcome-title">Cầm ngang máy.<br>Làm chủ côn số.</h1><p id="welcome-description">Côn bên trái. Phanh và ga bên phải.<br>Vuốt lên để tăng, xuống để giảm; thả tay giữ nguyên mức.<br>Tập không giới hạn. Chọn bài khác ở thanh trên khi muốn đổi.</p><label class="exercise-picker">Chọn bài <select id="welcome-route" aria-label="Chọn bài luyện tập"></select></label><button id="play" class="primary">Bắt đầu lái →</button><small>Không cần cài ứng dụng · Không cần đánh lái</small><a href="desktop.html">Mở bản desktop</a></div>
   </section>
+  <section id="result" class="curtain" hidden><div class="card"><div class="eyebrow">KẾT QUẢ LUYỆN TẬP</div><h2 id="result-title"></h2><p id="result-detail"></p><p id="result-stats"></p><button id="retry" class="primary">Tập lại bài này</button><small>Chọn Tập lại bài này để trở về màn hình bắt đầu và đổi bài ở thanh trên.</small></div></section>
   <section id="paused" class="curtain" hidden><div class="card"><h2 id="pause-title">Đã tạm dừng</h2><p id="pause-detail">Thả tay và nghỉ một chút. Xe đang được giữ nguyên.</p><button id="resume" class="primary">Tiếp tục</button></div></section>
   <section id="rotate" class="curtain" hidden><div class="card"><div class="rotate-icon">▯ ↻ ▭</div><h2>Xoay ngang điện thoại</h2><p>Bật tự động xoay màn hình, rồi cầm ngang máy.<br>Buổi tập được tạm dừng khi bạn xoay máy.</p><button id="rotate-fullscreen">Thử toàn màn hình</button><small>Nếu trình duyệt không hỗ trợ toàn màn hình, bạn vẫn chơi được khi cầm ngang.</small></div></section>
   <dialog id="guide"><button id="close-help" class="close" aria-label="Đóng">✕</button><h2>Lái chậm, phối hợp đúng.</h2>
+    <p><b>Sa hình:</b> chọn Dốc cầu hoặc Tăng tốc đường thẳng ở thanh trên. Đọc mục tiêu trước khi bắt đầu, theo vạch mốc trên đường và hướng dẫn ở giữa màn hình. Bài kết thúc khi hoàn thành hoặc phạm lỗi; chạm Tập lại để thử lại. Các mốc chỉ phục vụ luyện tập, không phải tiêu chuẩn chấm thi chính thức.</p>
+    <p id="exercise-instructions" hidden></p>
     <ol><li><b>Bàn đạp:</b> vuốt Côn, Phanh hoặc Ga lên để tăng, xuống để giảm. Thả tay giữ nguyên mức. Chạm lại để vuốt tiếp từ mức đó; vuốt xuống 0% để nhả hết.</li><li><b>Khởi hành:</b> đưa Côn lên 100%, chọn số 1. Tăng Ga vừa đủ, giảm Côn từ từ tới điểm bắt rồi nhả phanh tay khi đủ lực kéo.</li><li><b>Dừng:</b> giảm Ga về 0%, tăng Phanh và đưa Côn lên 100% trước khi vòng tua tụt thấp.</li><li><b>Lên dốc:</b> dùng phanh tay để giữ xe, chọn số 1, phối hợp côn–ga rồi nhả phanh tay. Nếu trôi, tăng Phanh và thử lại.</li><li><b>Xuống dốc:</b> dùng số phù hợp để có phanh động cơ, phối hợp phanh chân. Tránh về N hoặc giữ côn suốt dốc.</li><li><b>Tắt máy:</b> đưa Côn và Phanh lên 100%, giảm Ga về 0%, chạm “Bật động cơ” phía trên bàn đạp Côn, rồi chọn số phù hợp để tiếp tục.</li><li><b>Bài tập:</b> đường lặp lại liên tục, không tự kết thúc hoặc đổi bài. Chọn bài khác ở thanh trên khi bạn muốn chuyển. Tạm dừng giữ nguyên mức bàn đạp; “Tập lại” đưa xe về ban đầu.</li></ol><p>Giữ mức bàn đạp là trợ giúp của trò chơi. Mô hình dùng để học nguyên lý; điểm bắt côn trên mỗi xe thật khác nhau.</p><h3>Nhật ký buổi tập</h3><div id="logs">Chưa có lỗi.</div>
     <p><b>Nghe tiếng máy:</b> tăng ga làm tiếng máy cao hơn; côn bắt tải làm tiếng trầm và nặng hơn. Máy rung, hụt tua là dấu hiệu cần phối hợp lại côn, ga và số. Nút 🔊 / 🔇 trên thanh trên bật/tắt tiếng.</p>
   </dialog>

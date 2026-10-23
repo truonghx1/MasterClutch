@@ -1,3 +1,4 @@
+import {exercises} from './sahinh.js';
 // First-person cockpit, drawn locally so it stays sharp on phones and works offline.
 export function drawCockpit(ctx, w, h, car, routes) {
   const polygon = (points, fill) => {
@@ -48,6 +49,21 @@ export function drawCockpit(ctx, w, h, car, routes) {
     polygon([[center-far.half*1.05,far.y],[center+far.half*1.05,far.y],[center+close.half*1.05,close.y],[center-close.half*1.05,close.y]],'#d8d9bf');
     polygon([[center-far.half,far.y],[center+far.half,far.y],[center+close.half,close.y],[center-close.half,close.y]],'#68736d');
     if(((Math.floor((car.x+z)/5)%2)+2)%2===0)polygon([[center-far.half*.012,far.y],[center+far.half*.012,far.y],[center+close.half*.012,close.y],[center-close.half*.012,close.y]],'#eee8c8');
+  }
+  // Project practice lines using the same elevation/perspective as the road.
+  for(const [position,label] of exercises[car.route]?.markers??[]){
+    const z=position-car.x;
+    if(z<=0||z>150)continue;
+    const point=project(z);
+    line([[center-point.half,point.y],[center+point.half,point.y]],'#f6de83',Math.max(2,8*4/(z+4)));
+    if(z<80&&position===(exercises[car.route]?.markers.find(([x])=>x>car.x)?.[0])){
+      ctx.font=`bold ${Math.max(10,Math.min(15,w/60))}px system-ui`;
+      const signX=w*.79,signY=Math.max(point.y,h*.48);
+      ctx.textAlign='center';ctx.fillStyle='#15271f';
+      ctx.fillRect(signX-105,signY,210,23);
+      ctx.fillStyle='#fff0b0';ctx.fillText(`${label} · ${Math.ceil(z)} m`,signX,signY+16,200);
+      ctx.textAlign='start';
+    }
   }
   // Windshield pillars, mirror and dashboard.
   polygon([[0,0],[w*.07,0],[w*.15,h*.73],[0,h]],'#263a35');
