@@ -1,3 +1,4 @@
+import {Exercise,exercises} from './sahinh.js';
 import {Car,routes} from './physics.js';
 import {drawCockpit} from './cockpit.js';
 import {attachEngineAudio} from './engine-audio.js';
@@ -7,7 +8,7 @@ const canvas=$('road'),ctx=canvas.getContext('2d');
 const portrait=matchMedia('(orientation: portrait)');
 const touches=new Map(),keys=new Set();
 let car=new Car('basic',{continuous:true,directPedals:true}),mode='welcome',lastFrame=0,lastPaint=0;
-let seenErrors=0,noticeUntil=0;
+let seenErrors=0,noticeUntil=0,exercise=null;
 car.handbrake=true;
 const levels={clutch:1,brake:0,gas:0};
 const input={...levels};
@@ -26,6 +27,7 @@ function feedback(title,detail,error=false){
   $('feedback').classList.toggle('error',error);
 }
 function normalFeedback(){
+  if(exercise){feedback(...exercise.hint);return}
   if(!car.running)feedback('Đã tắt máy — khởi động lại','Vuốt Côn và Phanh lên 100%, chạm Bật động cơ rồi chọn số phù hợp.',true);
   else if(car.handbrake)feedback('Phanh tay đang giữ xe','Côn 100% → số 1 → tăng Ga → giảm Côn tới điểm bắt → nhả phanh tay.');
   else if(car.grade>.03)feedback('Lên dốc: giữ đủ lực kéo','Chọn số thấp phù hợp. Nếu trôi lùi, phanh dừng rồi đề-pa lại.');
@@ -39,14 +41,19 @@ function pause(){
   $('resume').textContent='Tiếp tục';$('pause').textContent='▶';render();
 }
 function resume(){
-  if(portrait.matches||$('guide').open)return;
+  if(portrait.matches||$('guide').open||exercise?.done)return;
   clearInput();mode='playing';lastFrame=0;$('paused').hidden=true;$('welcome').hidden=true;$('pause').textContent='Ⅱ';render();
 }
 function reset(){
   sound.setActive(false);
-  car=new Car($('route').value,{continuous:true,directPedals:true});car.handbrake=true;seenErrors=0;noticeUntil=0;
+  exercise=exercises[$('route').value]?new Exercise($('route').value):null;
+  car=new Car($('route').value,{continuous:!exercise,directPedals:true});car.handbrake=true;seenErrors=0;noticeUntil=0;
   Object.assign(levels,{clutch:1,brake:0,gas:0});
   clearInput();$('logs').textContent='Chưa có lỗi.';$('paused').hidden=true;
+  $('welcome-route').value=$('route').value;
+  $('welcome-title').textContent=exercise?exercises[car.route].title:'Cầm ngang máy. Làm chủ côn số.';
+  $('welcome-description').textContent=exercise?exercises[car.route].description:'Vuốt côn, phanh, ga lên để tăng, xuống để giảm; thả tay giữ nguyên mức. Tập không giới hạn, chọn bài khác khi muốn đổi.';
+  $('result').hidden=true;
   mode='welcome';$('welcome').hidden=false;$('pause').textContent='Ⅱ';render();
 }
 function orientationChanged(){
@@ -103,7 +110,10 @@ action($('handbrake'),handbrake);
 action($('start'),()=>{if(playable()){car.start();render()}});
 action($('pause'),()=>mode==='paused'?resume():pause());
 action($('restart'),reset);
+action($('retry'),reset);
 action($('resume'),resume);
+$('welcome-route').innerHTML=$('route').innerHTML;
+$('welcome-route').addEventListener('change',()=>{$('route').value=$('welcome-route').value;reset()});
 $('route').addEventListener('change',reset);
 
 async function fullscreen(){
@@ -138,6 +148,8 @@ window.addEventListener('keydown',event=>{
 window.addEventListener('keyup',event=>{if(keyboard[event.code]){keys.delete(keyboard[event.code]);syncInput()}});
 
 function render(){
+  $('exercise-instructions').hidden=!exercise;
+  $('exercise-instructions').textContent=exercise?exercises[car.route].description+' '+exercise.hint.join('. '):'';
   $('rpm').textContent=Math.round(car.rpm).toLocaleString('en-US');
   $('rpm-bar').style.width=Math.min(100,car.rpm/60)+'%';
   $('rpm-bar').style.background=car.rpm>5800?'#ffb08a':'#cfeda1';
@@ -147,7 +159,7 @@ function render(){
   $('engine').textContent=car.running?'● Máy đang chạy':'● ĐÃ TẮT MÁY';
   $('start').disabled=car.running;
   $('start').textContent=car.running?'● Máy đang chạy':'⏻ Bật động cơ';
-  $('distance').textContent=(car.v<-.1?'← ':'')+Math.round(car.x)+' m · Tập tự do';
+  $('distance').textContent=(car.v<-.1?'← ':'')+Math.round(car.x)+' m · '+(exercise?'Sa hình':'Tập tự do');
   $('time').textContent=Math.floor(car.time/60).toString().padStart(2,'0')+':'+Math.floor(car.time%60).toString().padStart(2,'0');
   $('fault-count').textContent=car.errors.length+' lỗi';
   $('progress').style.width=car.routePosition/car.length*100+'%';
@@ -175,6 +187,16 @@ function frame(now){
   const dt=lastFrame?Math.min((now-lastFrame)/1000,.05):0;lastFrame=now;
   if(playable()){
     car.step(dt,input);
+    if(exercise){
+      exercise.update(car);
+      if(exercise.done){
+        mode='result';clearInput();sound.setActive(false);
+        $('result-title').textContent=exercise.passed?'Hoàn thành bài tập':'Cần tập lại';
+        $('result-detail').textContent=exercise.reason;
+        $('result-stats').textContent=`Thời gian ${car.time.toFixed(1)} giây · Quãng đường ${car.x.toFixed(1)} m · Tốc độ cao nhất ${car.maxSpeed.toFixed(1)} km/h`;
+        $('result').hidden=false;
+      }
+    }
   }
   sound.update(car,playable()&&!document.hidden);
   // Render at most 30 times per second, with capped canvas resolution for mobile GPUs.

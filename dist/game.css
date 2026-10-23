@@ -39,3 +39,6 @@
   .driving-controls { grid-template-columns: minmax(170px, 1fr) 260px minmax(340px, 2fr); }
   .pedal { height: 170px; }
 }
+.exercise-picker{display:flex;justify-content:center;align-items:center;gap:8px;margin:10px 0;font-size:12px}
+.exercise-picker select{min-width:0;max-width:75%;min-height:44px;border:1px solid #77917d;border-radius:8px;background:#233d30;padding:6px}
+@media(max-height:340px){.card{padding:4px 12px}.card h1{font-size:22px;margin:5px 0}.card p{font-size:11px;line-height:1.4;margin:6px 0}.exercise-picker{margin:5px 0}.card>small,.card>a{margin-top:5px}}

@@ -1,4 +1,6 @@
 export const routes={
+  bridge:{name:'Dừng và khởi hành trên dốc cầu',segments:[[20,0],[65,.1],[20,0],[65,-.1],[30,0]]},
+  acceleration:{name:'Tăng tốc trên đường thẳng',segments:[[140,0],[80,0]]},
   basic:{name:'Làm quen côn số',segments:[[350,0],[220,.04],[180,0],[220,-.04],[350,0]]},
   hill:{name:'Khởi hành ngang dốc',segments:[[250,.08],[180,0],[350,.12],[220,-.06],[300,0]]},
   descent:{name:'Kiểm soát xuống dốc',segments:[[220,-.08],[380,-.12],[180,0],[280,.06],[240,0]]}

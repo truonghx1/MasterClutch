@@ -99,3 +99,15 @@ Mô hình vật lý được đơn giản hóa để luyện phối hợp bàn p
 - Đề-pa dốc: giữ phanh chân, bật phanh tay, đạp côn và chọn số 1. Nhả phanh chân, thêm ga, nhả côn tới điểm bắt; nhả phanh tay khi đủ lực kéo. Nếu trôi, phanh dừng và thử lại. Không giữ xe lâu trên dốc bằng côn trượt.
 - Giới hạn tua khoảng 6.000 RPM giảm lực kéo khi giữ ga. Nó không ngăn bánh xe ép động cơ quá tua khi xuống dốc; khi đó cần phanh giảm tốc. Bài tập chặn thao tác về số gây quá tua.
 - Các ngưỡng chỉ là cấu hình một xe giả định; không mô phỏng hỏng hóc, hao mòn, nhiệt côn hoặc hỗ trợ giữ dốc tự động.
+
+
+## Bài sa hình — nhánh `feature/sahinh`
+
+Mở bản mobile `/`, chọn bài ngay ở màn hình bắt đầu hoặc thanh trên khi đang chơi:
+
+- **Dốc cầu:** tiếp cận dốc 10%, dừng trong vùng 43–47 m bằng phanh ít nhất 2 giây. Đề-pa lại bằng số 1, phối hợp ga/côn và phanh tay, không trôi lùi quá 0,5 m. Qua đỉnh cầu, kiểm soát tốc độ xuống dốc rồi tới đích 195 m.
+- **Tăng tốc đường thẳng:** khởi hành, lần lượt lên số 2 rồi số 3. Trong vùng 60–140 m, nhả côn và đạt tối thiểu 25 km/h ở số 3. Sau đó giảm tốc, đạp côn khi gần dừng và phanh dừng trong vùng 190–205 m.
+
+Vạch vàng và biển trên đường chỉ các mốc luyện tập. Ô hướng dẫn cập nhật theo từng bước; chạm **Chi tiết** để đọc đầy đủ khi màn hình thấp. Kết quả hiện khi hoàn thành, tắt máy, vượt vùng mục tiêu hoặc trôi lùi quá mức cho phép. Chọn **Tập lại bài này** để thử lại hoặc đổi bài. Xoay dọc/tạm dừng giữ nguyên tiến trình. Ba bài tập tự do cũ vẫn lặp vô hạn.
+
+Các khoảng cách, tốc độ và điều kiện trên là quy ước của mô phỏng để luyện phối hợp côn–ga–phanh, không phải bộ tiêu chuẩn chấm thi sát hạch chính thức. Kiểm thử quy tắc và khả năng hoàn thành bằng mô hình xe thật nằm trong `tests/sahinh.test.js`; luồng mobile nằm trong `e2e/sahinh.spec.js`.
