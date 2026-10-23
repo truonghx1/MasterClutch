@@ -27,6 +27,10 @@ for(const [width,height] of [[667,280],[667,375],[740,320],[844,390],[932,430],[
     const selectors=['[data-pedal="clutch"]','[data-pedal="brake"]','[data-pedal="gas"]','#handbrake','#start','[data-gear="1"]','[data-gear="5"]','#sound','#pause'];
     for(const selector of selectors){
       const box=await page.locator(selector).boundingBox();
+      if(selector.includes('data-pedal')){
+        expect(box.width,selector+' touch width').toBeGreaterThanOrEqual(100);
+        expect(box.height,selector+' touch height').toBeGreaterThanOrEqual(height<=340?110:125);
+      }
       expect(box.x,selector).toBeGreaterThanOrEqual(0);expect(box.y,selector).toBeGreaterThanOrEqual(0);
       expect(box.x+box.width,selector).toBeLessThanOrEqual(width+1);expect(box.y+box.height,selector).toBeLessThanOrEqual(height+1);
       expect(await page.locator(selector).evaluate(el=>{const b=el.getBoundingClientRect();return el.contains(document.elementFromPoint(b.x+b.width/2,b.y+b.height/2))}),selector+' is not covered').toBeTruthy();
@@ -35,6 +39,20 @@ for(const [width,height] of [[667,280],[667,375],[740,320],[844,390],[932,430],[
     expect(await page.evaluate(()=>document.documentElement.scrollHeight)).toBeLessThanOrEqual(height);
   });
 }
+
+test('Dragging pedal labels does not select text',async({page})=>{
+  await play(page);
+  for(const name of ['clutch','brake','gas']){
+    const label=page.locator(`[data-pedal="${name}"] span`);
+    const box=await label.boundingBox();
+    await page.mouse.move(box.x,box.y+box.height/2);
+    await page.mouse.down();
+    await page.mouse.move(box.x+box.width,box.y+box.height/2,{steps:8});
+    await page.mouse.move(box.x+box.width,box.y-40,{steps:8});
+    await page.mouse.up();
+    expect(await page.evaluate(()=>window.getSelection().toString())).toBe('');
+  }
+});
 
 for(const name of ['clutch','brake','gas']){
   test(`${name}: contact does not jump, swiping and lifting retain the selected level`,async({page})=>{
