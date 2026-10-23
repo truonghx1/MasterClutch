@@ -67,7 +67,7 @@ Vercel Hobby dành cho sử dụng cá nhân, phi thương mại: https://vercel
 
 Ứng dụng HTML/CSS/JavaScript, không cần cài thư viện.
 
-## Chạy thử
+## Chạy thử nghiệm
 
 Yêu cầu Node.js 20 trở lên. Trong thư mục dự án:
 
